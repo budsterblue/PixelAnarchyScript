@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        0.9.1
+// @version        0.10
 // ==/UserScript==
 
 
@@ -29,6 +29,8 @@ pixelImg.style.imageRendering = "pixelated";
 pixelImg.src = 'https://cdn.discordapp.com/attachments/716027937262010410/731069722161971250/canvas.png';
 pixelCanvas.appendChild(pixelImg);
 
+var pixelCheckboxGroup = document.createElement("form-group");
+pixelCheckboxGroup.style.display = "block";
 var pixelCheckbox = document.createElement("input");
 pixelCheckbox.type = "checkbox";
 // State
@@ -40,81 +42,86 @@ pixelCheckbox.addEventListener('change', (event) => {
   }
 });
 // Append
-pixelSidebar.appendChild(pixelCheckbox);
-pixelSidebar.appendChild(document.createTextNode("Toggle Overlay"));
+pixelCheckboxGroup.appendChild(pixelCheckbox);
+pixelCheckboxGroup.appendChild(document.createTextNode("Toggle Overlay"));
+pixelSidebar.appendChild(pixelCheckboxGroup);
 
 // --Update Image--
+var pixelTextInputGroup = document.createElement("form-group");
+pixelTextInputGroup.style.display = "block";
 var pixelTextInput = document.createElement("input");
 pixelTextInput.type = "text";
 var pixelButton = document.createElement("button");
 pixelButton.innerText = "Update Image";
 // State
 pixelButton.addEventListener('click', (event) => { pixelImg.src = pixelTextInput.value; });
-pixelSidebar.appendChild(pixelTextInput);
-pixelSidebar.appendChild(pixelButton);
+pixelTextInputGroup.appendChild(pixelTextInput);
+pixelTextInputGroup.appendChild(pixelButton);
+pixelSidebar.appendChild(pixelTextInputGroup);
 
 // --Opacity Slider--
+var pixelRangeSliderGroup = document.createElement("form-group");
+pixelRangeSliderGroup.style.display = "block";
 var pixelRangeSlider = document.createElement("input");
 pixelRangeSlider.type = "range";
 pixelRangeSlider.min = 0;
 pixelRangeSlider.max = 99;
 pixelRangeSlider.value = pixelOpacity;
 pixelRangeSlider.addEventListener('input', (event) => { pixelImg.style.opacity = (100 - pixelRangeSlider.value) / 100; });
-pixelSidebar.appendChild(pixelRangeSlider);
-
-pixelSidebar.appendChild(document.createTextNode("Change Opacity"));
+pixelRangeSliderGroup.appendChild(pixelRangeSlider);
+pixelRangeSliderGroup.appendChild(document.createTextNode("Change Opacity"));
+pixelSidebar.appendChild(pixelRangeSliderGroup);
 
 // --Change Offset--
+var pixelOffsetXGroup = document.createElement("form-group");
+pixelOffsetXGroup.style.display = "block";
 pixelOffsetX = document.createElement("input");
 pixelOffsetX.type = "number";
+pixelOffsetX.style.width = "60px";
+var pixelOffsetYGroup = document.createElement("form-group");
+pixelOffsetYGroup.style.display = "block";
 pixelOffsetY = document.createElement("input");
 pixelOffsetY.type = "number";
+pixelOffsetY.style.width = "60px";
 pixelOffsetX.addEventListener('change', (event) => { pixelImg.style.left = pixelOffsetX.value + "px"; });
 pixelOffsetY.addEventListener('change', (event) => { pixelImg.style.top = (pixelOffsetY.value -3240) + "px"; });
-pixelSidebar.appendChild(pixelOffsetX);
-pixelSidebar.appendChild(document.createTextNode("X Offset"));
-pixelSidebar.appendChild(pixelOffsetY);
-pixelSidebar.appendChild(document.createTextNode("Y Offset"));
+pixelOffsetXGroup.appendChild(pixelOffsetX);
+pixelOffsetXGroup.appendChild(document.createTextNode("X Offset"));
+pixelOffsetYGroup.appendChild(pixelOffsetY);
+pixelOffsetYGroup.appendChild(document.createTextNode("Y Offset"));
+pixelSidebar.appendChild(pixelOffsetXGroup);
+pixelSidebar.appendChild(pixelOffsetYGroup);
 
 // --Scale--
+var pixelWidthGroup = document.createElement("form-group");
+pixelWidthGroup.style.display = "block";
 pixelWidth = document.createElement("input");
 pixelWidth.type = "number";
+pixelWidth.style.width = "60px";
 pixelWidth.addEventListener('change', (event) => { pixelImg.style.width = pixelWidth.value + "px"; });
+var pixelHeightGroup = document.createElement("form-group");
+pixelHeightGroup.style.display = "block";
 pixelHeight = document.createElement("input");
 pixelHeight.type = "number";
+pixelHeight.style.width = "60px";
 pixelHeight.addEventListener('change', (event) => { pixelImg.style.height = pixelHeight.value + "px"; });
 
-pixelSidebar.appendChild(document.createTextNode("\nUse only on for scaling"));
-pixelSidebar.appendChild(pixelWidth);
-pixelSidebar.appendChild(document.createTextNode("Width"));
-pixelSidebar.appendChild(pixelHeight);
-pixelSidebar.appendChild(document.createTextNode("Height"));
+pixelSidebar.appendChild(document.createTextNode("\nFor Scaling, Only Use Width.\n"));
+pixelWidthGroup.appendChild(pixelWidth);
+pixelWidthGroup.appendChild(document.createTextNode("Width"));
+pixelHeightGroup.appendChild(pixelHeight);
+pixelHeightGroup.appendChild(document.createTextNode("Height"));
+pixelSidebar.appendChild(pixelWidthGroup);
+pixelSidebar.appendChild(pixelHeightGroup);
 
 // --Message Expander--
+var pixelMessagesGroup = document.createElement("form-group");
+pixelMessagesGroup.style.display = "block";
 pixelMessages = document.getElementById("messages");
-pixelMessages.height = 800;
-
-// --Arrow Key Movement--
-document.onkeydown = checkKey;
-pixelTranslate = document.getElementById("translate");
-pixelTranslateCut = document.getElementById("translate").style.transform.substring(pixelTranslate.indexOf("(") +1, pixelTranslate.indexOf(")"));
-pixelTranslateX = pixelTranslateCut.substring()
-
-function checkKey(e) {
-
-    e = e || window.event;
-
-    if (e.keyCode == '38') {
-        
-    }
-    else if (e.keyCode == '40') {
-        // down arrow
-    }
-    else if (e.keyCode == '37') {
-       // left arrow
-    }
-    else if (e.keyCode == '39') {
-       // right arrow
-    }
-
-}
+pixelMessagesInput = document.createElement("input");
+pixelMessagesInput.type = "number";
+pixelMessagesInput.style.width = "60px";
+pixelMessagesInput.addEventListener('change', (event) => { pixelMessages.style.height = pixelMessagesInput.value + "px"; });
+pixelMessagesGroup.appendChild(pixelMessagesInput);
+pixelMessagesGroup.appendChild(document.createTextNode("Chat Height"));
+pixelSidebar.appendChild(pixelMessagesGroup);
