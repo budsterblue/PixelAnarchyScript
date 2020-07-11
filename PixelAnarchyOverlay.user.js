@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        0.8
+// @version        0.9
 // ==/UserScript==
 
 
@@ -82,7 +82,6 @@ pixelWidth.addEventListener('change', (event) => { pixelImg.style.width = pixelW
 pixelHeight = document.createElement("input");
 pixelHeight.type = "number";
 pixelHeight.addEventListener('change', (event) => { pixelImg.style.height = pixelHeight.value + "px"; });
-
 
 pixelSidebar.appendChild(document.createTextNode("\nUse only on for scaling"));
 pixelSidebar.appendChild(pixelWidth);
