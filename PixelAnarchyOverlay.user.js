@@ -7,14 +7,16 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        0.7
+// @version        0.8
 // ==/UserScript==
 
 
 // --Base Image Overlay--
 var pixelOpacity = 0.75;
 var pixelCanvas = document.getElementById("scale");
-var pixelImg = document.createElement('img');
+var pixelImg = document.createElement("img");
+var pixelSidebar = document.getElementById("sidenav");
+pixelSidebar.style.color = "white";
 // Styling
 pixelImg.style.position = "relative";
 pixelImg.style.top = "-3240px";
@@ -26,7 +28,6 @@ pixelImg.style.visibility = "hidden";
 pixelImg.src = 'https://cdn.discordapp.com/attachments/716027937262010410/731069722161971250/canvas.png';
 pixelCanvas.appendChild(pixelImg);
 
-var pixelSidebar = document.getElementById("sidenav");
 var pixelCheckbox = document.createElement("input");
 pixelCheckbox.type = "checkbox";
 // State
@@ -59,6 +60,7 @@ pixelRangeSlider.max = 99;
 pixelRangeSlider.value = pixelOpacity;
 pixelRangeSlider.addEventListener('input', (event) => { pixelImg.style.opacity = (100 - pixelRangeSlider.value) / 100; });
 pixelSidebar.appendChild(pixelRangeSlider);
+
 pixelSidebar.appendChild(document.createTextNode("Change Opacity"));
 
 // --Change Offset--
@@ -81,7 +83,8 @@ pixelHeight = document.createElement("input");
 pixelHeight.type = "number";
 pixelHeight.addEventListener('change', (event) => { pixelImg.style.height = pixelHeight.value + "px"; });
 
-pixelSidebar.appendChild(document.createTextNode("\nUse only one for scaling"))
+
+pixelSidebar.appendChild(document.createTextNode("\nUse only on for scaling"));
 pixelSidebar.appendChild(pixelWidth);
 pixelSidebar.appendChild(document.createTextNode("Width"));
 pixelSidebar.appendChild(pixelHeight);
