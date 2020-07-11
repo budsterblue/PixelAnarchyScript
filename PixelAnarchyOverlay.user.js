@@ -24,6 +24,7 @@ pixelImg.style.left = "0px";
 pixelImg.style.opacity = pixelOpacity;
 pixelImg.style.pointerEvents = "none";
 pixelImg.style.visibility = "hidden";
+pixelImg.style.imageRendering = "pixelated";
 // Add Image and Append
 pixelImg.src = 'https://cdn.discordapp.com/attachments/716027937262010410/731069722161971250/canvas.png';
 pixelCanvas.appendChild(pixelImg);
@@ -88,3 +89,32 @@ pixelSidebar.appendChild(pixelWidth);
 pixelSidebar.appendChild(document.createTextNode("Width"));
 pixelSidebar.appendChild(pixelHeight);
 pixelSidebar.appendChild(document.createTextNode("Height"));
+
+// --Message Expander--
+pixelMessages = document.getElementById("messages");
+pixelMessages.height = 800;
+
+// --Arrow Key Movement--
+document.onkeydown = checkKey;
+pixelTranslate = document.getElementById("translate");
+pixelTranslateCut = document.getElementById("translate").style.transform.substring(pixelTranslate.indexOf("(") +1, pixelTranslate.indexOf(")"));
+pixelTranslateX = pixelTranslateCut.substring()
+
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+    }
+    else if (e.keyCode == '37') {
+       // left arrow
+    }
+    else if (e.keyCode == '39') {
+       // right arrow
+    }
+
+}
