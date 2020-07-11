@@ -2,6 +2,7 @@
 // @name           Pixel Anarchy Image Overlay
 // @namespace      pixel_anarchy_image_overlay
 // @description    An Image overlay tool for the site Pixel Anarchy Online
+// @author 	   Budsterblue
 // @include        http://*.pixelanarchy.online/*
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
