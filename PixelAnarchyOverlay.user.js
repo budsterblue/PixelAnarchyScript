@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.0.2
+// @version        1.0.3
 // ==/UserScript==
 
 
@@ -144,7 +144,7 @@ pixelPreviewCanvas.width = 40;
 pixelPreviewCanvas.height = 40;
 var pixelCtx = pixelPreviewCanvas.getContext('2d');
 pixelCtx.strokeStyle = "gray";
-pixelCtx.lineWidth = 1;
+pixelCtx.lineWidth = 2;
 pixelCtx.fillStyle = "#FFFFFF";
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
 [...document.getElementsByClassName('btnbelow')].forEach(function(elem){
