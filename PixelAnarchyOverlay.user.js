@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.0.1
+// @version        1.0.2
 // ==/UserScript==
 
 
@@ -133,17 +133,18 @@ pixelSidebar.appendChild(pixelMessagesGroup);
 
 // --Pixel Preview--
 var pixelPreviewEnabled = false;
+//document.getElementById("myCanvas").style.cursor = "";
 var pixelPreviewGroup = document.createElement("form-group");
 pixelPreviewGroup.style.display = "block";
 var pixelPreview = document.createElement("input");
 pixelPreview.type = "checkbox";
 // Canvas
 var pixelPreviewCanvas = document.createElement("canvas");
-pixelPreviewCanvas.width = 32;
-pixelPreviewCanvas.height = 32;
+pixelPreviewCanvas.width = 40;
+pixelPreviewCanvas.height = 40;
 var pixelCtx = pixelPreviewCanvas.getContext('2d');
 pixelCtx.strokeStyle = "gray";
-pixelCtx.lineWidth = 5;
+pixelCtx.lineWidth = 1;
 pixelCtx.fillStyle = "#FFFFFF";
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
 [...document.getElementsByClassName('btnbelow')].forEach(function(elem){
@@ -162,11 +163,11 @@ pixelCtx.fillStyle = "#FFFFFF";
 		} else{
 			pixelCtx.fillStyle = e.srcElement.id;
 		}
-		pixelCtx.moveTo(0,0);
-		pixelCtx.lineTo(32,0);
-		pixelCtx.lineTo(0,32);
+		pixelCtx.moveTo(1,1);
+		pixelCtx.lineTo(17,19);
+		pixelCtx.lineTo(1,25);
+		pixelCtx.lineTo(1,1);
 		pixelCtx.stroke();
-		pixelCtx.lineTo(0,0);
 		pixelCtx.fill();
 		pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
     
@@ -179,11 +180,11 @@ pixelPreview.addEventListener('change', (event) => {
   if (event.target.checked) {
     document.getElementById("myCanvas").style.cursor = "";
     pixelPreviewEnabled = true;
-    pixelCtx.moveTo(0,0);
-    pixelCtx.lineTo(32,0);
-    pixelCtx.lineTo(0,32);
+    pixelCtx.moveTo(1,1);
+    pixelCtx.lineTo(17,19);
+    pixelCtx.lineTo(1,25);
+    pixelCtx.lineTo(1,1);
     pixelCtx.stroke();
-    pixelCtx.lineTo(0,0);
     pixelCtx.fill();
     pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
   } else {
@@ -193,6 +194,6 @@ pixelPreview.addEventListener('change', (event) => {
   }
 });
 // Append
-pixelPreviewGroup.appendChild(pixelPreview);
 pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
+pixelPreviewGroup.appendChild(pixelPreview);
 pixelSidebar.appendChild(pixelPreviewGroup);
