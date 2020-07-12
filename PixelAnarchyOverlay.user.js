@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.0
+// @version        1.0.1
 // ==/UserScript==
 
 
@@ -133,7 +133,6 @@ pixelSidebar.appendChild(pixelMessagesGroup);
 
 // --Pixel Preview--
 var pixelPreviewEnabled = false;
-//document.getElementById("myCanvas").style.cursor = "";
 var pixelPreviewGroup = document.createElement("form-group");
 pixelPreviewGroup.style.display = "block";
 var pixelPreview = document.createElement("input");
@@ -143,7 +142,7 @@ var pixelPreviewCanvas = document.createElement("canvas");
 pixelPreviewCanvas.width = 32;
 pixelPreviewCanvas.height = 32;
 var pixelCtx = pixelPreviewCanvas.getContext('2d');
-pixelCtx.strokeStyle = "#161616";
+pixelCtx.strokeStyle = "gray";
 pixelCtx.lineWidth = 5;
 pixelCtx.fillStyle = "#FFFFFF";
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
@@ -194,6 +193,6 @@ pixelPreview.addEventListener('change', (event) => {
   }
 });
 // Append
-pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
 pixelPreviewGroup.appendChild(pixelPreview);
+pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
 pixelSidebar.appendChild(pixelPreviewGroup);
