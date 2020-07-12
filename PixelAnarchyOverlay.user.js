@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.0.3
+// @version        1.0.4
 // ==/UserScript==
 
 
@@ -149,30 +149,30 @@ pixelCtx.fillStyle = "#FFFFFF";
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
 [...document.getElementsByClassName('btnbelow')].forEach(function(elem){
     elem.addEventListener('click',function(e){
-	if (pixelPreviewEnabled){
-		if (e.srcElement.id == "mix"){
-			var gradient = pixelCtx.createLinearGradient(0, 0, 30, 0);
-			gradient.addColorStop(0, 'red');
-			gradient.addColorStop(1 / 6, 'orange');
-			gradient.addColorStop(2 / 6, 'yellow');
-			gradient.addColorStop(3 / 6, 'green');
-			gradient.addColorStop(4 / 6, 'blue');
-			gradient.addColorStop(5 / 6, 'indigo');
-			gradient.addColorStop(1, 'violet');
-			pixelCtx.fillStyle = gradient;
-		} else{
-			pixelCtx.fillStyle = e.srcElement.id;
-		}
-		pixelCtx.moveTo(1,1);
-		pixelCtx.lineTo(17,19);
-		pixelCtx.lineTo(1,25);
-		pixelCtx.lineTo(1,1);
-		pixelCtx.stroke();
-		pixelCtx.fill();
-		pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
+    if (pixelPreviewEnabled){
+        if (e.srcElement.id == "mix"){
+            var gradient = pixelCtx.createLinearGradient(0, 0, 30, 0);
+            gradient.addColorStop(0, 'red');
+            gradient.addColorStop(1 / 6, 'orange');
+            gradient.addColorStop(2 / 6, 'yellow');
+            gradient.addColorStop(3 / 6, 'green');
+            gradient.addColorStop(4 / 6, 'blue');
+            gradient.addColorStop(5 / 6, 'indigo');
+            gradient.addColorStop(1, 'violet');
+            pixelCtx.fillStyle = gradient;
+        } else{
+            pixelCtx.fillStyle = e.srcElement.id;
+        }
+        pixelCtx.moveTo(2,2);
+        pixelCtx.lineTo(18,20);
+        pixelCtx.lineTo(2,26);
+        pixelCtx.lineTo(2,1);
+        pixelCtx.stroke();
+        pixelCtx.fill();
+        pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
     
-		}
-	})
+        }
+    })
 })
 
 // State
@@ -180,10 +180,10 @@ pixelPreview.addEventListener('change', (event) => {
   if (event.target.checked) {
     document.getElementById("myCanvas").style.cursor = "";
     pixelPreviewEnabled = true;
-    pixelCtx.moveTo(1,1);
-    pixelCtx.lineTo(17,19);
-    pixelCtx.lineTo(1,25);
-    pixelCtx.lineTo(1,1);
+    pixelCtx.moveTo(2,2);
+    pixelCtx.lineTo(18,20);
+    pixelCtx.lineTo(2,26);
+    pixelCtx.lineTo(2,1);
     pixelCtx.stroke();
     pixelCtx.fill();
     pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
