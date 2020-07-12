@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        0.10
+// @version        1.0
 // ==/UserScript==
 
 
@@ -132,7 +132,8 @@ pixelMessagesGroup.appendChild(document.createTextNode("Chat Height"));
 pixelSidebar.appendChild(pixelMessagesGroup);
 
 // --Pixel Preview--
-document.getElementById("myCanvas").style.cursor = "";
+var pixelPreviewEnabled = false;
+//document.getElementById("myCanvas").style.cursor = "";
 var pixelPreviewGroup = document.createElement("form-group");
 pixelPreviewGroup.style.display = "block";
 var pixelPreview = document.createElement("input");
@@ -142,48 +143,57 @@ var pixelPreviewCanvas = document.createElement("canvas");
 pixelPreviewCanvas.width = 32;
 pixelPreviewCanvas.height = 32;
 var pixelCtx = pixelPreviewCanvas.getContext('2d');
-pixelCtx.strokeStyle = "#FFFFFF";
-// First Run
-pixelCtx.rect(0, 0, 30, 30);
+pixelCtx.strokeStyle = "#161616";
+pixelCtx.lineWidth = 5;
 pixelCtx.fillStyle = "#FFFFFF";
-pixelCtx.fill();
-pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
-// Mutator
-// More Details https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
-// select the target node
-var pixelTarget = document.getElementsByClassName("pallete")[0];
-// create an observer instance
-var pixelObserver = new MutationObserver(function(mutations) {
-	console.log("doing something");
-	for (const i in pixelTarget.childNodes) {
-		if (i.style.border == "3px"){
-			//pixelCtx.clearRect(0, 0, pixelPreviewCanvas.width, pixelPreviewCanvas.height);
-			pixelCtx.fillStyle = i.id;
-			pixelCtx.rect(30, 30, 30, 30);
-			pixelCtx.fill();
-			pixelCanvas.style.pixelPreviewCanvas = 'url(' + cursor.toDataURL() + '), auto';
+// Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
+[...document.getElementsByClassName('btnbelow')].forEach(function(elem){
+    elem.addEventListener('click',function(e){
+	if (pixelPreviewEnabled){
+		if (e.srcElement.id == "mix"){
+			var gradient = pixelCtx.createLinearGradient(0, 0, 30, 0);
+			gradient.addColorStop(0, 'red');
+			gradient.addColorStop(1 / 6, 'orange');
+			gradient.addColorStop(2 / 6, 'yellow');
+			gradient.addColorStop(3 / 6, 'green');
+			gradient.addColorStop(4 / 6, 'blue');
+			gradient.addColorStop(5 / 6, 'indigo');
+			gradient.addColorStop(1, 'violet');
+			pixelCtx.fillStyle = gradient;
+		} else{
+			pixelCtx.fillStyle = e.srcElement.id;
 		}
-	}
-});
-// pass in the target node, as well as the observer options
-pixelObserver.observe(pixelTarget, { attributes: true, childList: true, characterData: true });
+		pixelCtx.moveTo(0,0);
+		pixelCtx.lineTo(32,0);
+		pixelCtx.lineTo(0,32);
+		pixelCtx.stroke();
+		pixelCtx.lineTo(0,0);
+		pixelCtx.fill();
+		pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
+    
+		}
+	})
+})
 
 // State
-//pixelCheckbox.addEventListener('change', (event) => {
-//  if (event.target.checked) {
-//    pixelPreviewCanvas.style.visibility = "visible";
-//  } else {
-//    pixelPreviewCanvas.style.visibility = "hidden";
-//  }
-//});
+pixelPreview.addEventListener('change', (event) => {
+  if (event.target.checked) {
+    document.getElementById("myCanvas").style.cursor = "";
+    pixelPreviewEnabled = true;
+    pixelCtx.moveTo(0,0);
+    pixelCtx.lineTo(32,0);
+    pixelCtx.lineTo(0,32);
+    pixelCtx.stroke();
+    pixelCtx.lineTo(0,0);
+    pixelCtx.fill();
+    pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
+  } else {
+    document.getElementById("myCanvas").style.cursor = "crosshair";
+    pixelPreviewEnabled = false;
+    pixelCanvas.style.cursor = "pointer";
+  }
+});
 // Append
 pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
 pixelPreviewGroup.appendChild(pixelPreview);
 pixelSidebar.appendChild(pixelPreviewGroup);
-// Logic
-//document.addEventListener('mousemove', function(ev){
-//	if (pixelPreviewCanvas.style.visibility == "visible") {
-//		pixelPreviewCanvas.style.transform = 'translateY('+(ev.clientY-65)+'px)';
-//		pixelPreviewCanvas.style.transform += 'translateX('+(ev.clientX-65)+'px)';
-//	}
-//},false);  
