@@ -51,10 +51,15 @@ var pixelTextInputGroup = document.createElement("form-group");
 pixelTextInputGroup.style.display = "block";
 var pixelTextInput = document.createElement("input");
 pixelTextInput.type = "text";
+var pixelUploadInput = document.createElement("input");
+pixelUploadInput.type = "file"
+pixelUploadInput.accept = "image/*"
 var pixelButton = document.createElement("button");
 pixelButton.innerText = "Update Image";
 // State
 pixelButton.addEventListener('click', (event) => { pixelImg.src = pixelTextInput.value; });
+pixelUploadInput.addEventListener('change', (event) => { pixelImg.src = window.URL.createObjectURL(pixelUploadInput.files[0]); });
+pixelTextInputGroup.appendChild(pixelUploadInput);
 pixelTextInputGroup.appendChild(pixelTextInput);
 pixelTextInputGroup.appendChild(pixelButton);
 pixelSidebar.appendChild(pixelTextInputGroup);
@@ -117,11 +122,68 @@ pixelSidebar.appendChild(pixelHeightGroup);
 // --Message Expander--
 var pixelMessagesGroup = document.createElement("form-group");
 pixelMessagesGroup.style.display = "block";
-pixelMessages = document.getElementById("messages");
-pixelMessagesInput = document.createElement("input");
+var pixelMessages = document.getElementById("messages");
+var pixelMessagesInput = document.createElement("input");
 pixelMessagesInput.type = "number";
 pixelMessagesInput.style.width = "60px";
 pixelMessagesInput.addEventListener('change', (event) => { pixelMessages.style.height = pixelMessagesInput.value + "px"; });
 pixelMessagesGroup.appendChild(pixelMessagesInput);
 pixelMessagesGroup.appendChild(document.createTextNode("Chat Height"));
 pixelSidebar.appendChild(pixelMessagesGroup);
+
+// --Pixel Preview--
+document.getElementById("myCanvas").style.cursor = "";
+var pixelPreviewGroup = document.createElement("form-group");
+pixelPreviewGroup.style.display = "block";
+var pixelPreview = document.createElement("input");
+pixelPreview.type = "checkbox";
+// Canvas
+var pixelPreviewCanvas = document.createElement("canvas");
+pixelPreviewCanvas.width = 32;
+pixelPreviewCanvas.height = 32;
+var pixelCtx = pixelPreviewCanvas.getContext('2d');
+pixelCtx.strokeStyle = "#FFFFFF";
+// First Run
+pixelCtx.rect(0, 0, 30, 30);
+pixelCtx.fillStyle = "#FFFFFF";
+pixelCtx.fill();
+pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
+// Mutator
+// More Details https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+// select the target node
+var pixelTarget = document.getElementsByClassName("pallete")[0];
+// create an observer instance
+var pixelObserver = new MutationObserver(function(mutations) {
+	console.log("doing something");
+	for (const i in pixelTarget.childNodes) {
+		if (i.style.border == "3px"){
+			//pixelCtx.clearRect(0, 0, pixelPreviewCanvas.width, pixelPreviewCanvas.height);
+			pixelCtx.fillStyle = i.id;
+			pixelCtx.rect(30, 30, 30, 30);
+			pixelCtx.fill();
+			pixelCanvas.style.pixelPreviewCanvas = 'url(' + cursor.toDataURL() + '), auto';
+		}
+	}
+});
+// pass in the target node, as well as the observer options
+pixelObserver.observe(pixelTarget, { attributes: true, childList: true, characterData: true });
+
+// State
+//pixelCheckbox.addEventListener('change', (event) => {
+//  if (event.target.checked) {
+//    pixelPreviewCanvas.style.visibility = "visible";
+//  } else {
+//    pixelPreviewCanvas.style.visibility = "hidden";
+//  }
+//});
+// Append
+pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
+pixelPreviewGroup.appendChild(pixelPreview);
+pixelSidebar.appendChild(pixelPreviewGroup);
+// Logic
+//document.addEventListener('mousemove', function(ev){
+//	if (pixelPreviewCanvas.style.visibility == "visible") {
+//		pixelPreviewCanvas.style.transform = 'translateY('+(ev.clientY-65)+'px)';
+//		pixelPreviewCanvas.style.transform += 'translateX('+(ev.clientX-65)+'px)';
+//	}
+//},false);  
