@@ -1,20 +1,49 @@
 // ==UserScript==
-// @name           Pixel Anarchy Image Overlay
+// @name           Pixel Anarchy Script
 // @namespace      pixel_anarchy_image_overlay
-// @description    An Image overlay tool for the site Pixel Anarchy Online
+// @description    Miscellaneous tools for the site Pixel Anarchy Online
 // @author 	   Budsterblue
 // @include        http://*.pixelanarchy.online/*
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.2
+// @version        1.3
 // ==/UserScript==
 
 
-// --Base Image Overlay--
+// --Commonly used variables--
 var pixelCanvas = document.getElementById("scale");
 var pixelSidebar = document.getElementById("sidenav");
 pixelSidebar.style.color = "white";
+var pixelOptions = document.createElement("details");
+pixelOptions.style.outline = "none";
+var pixelSummary = document.createElement("summary");
+pixelSummary.innerText = "Budsterblue's Options";
+pixelOptions.appendChild(pixelSummary);
+pixelSidebar.appendChild(pixelOptions);
+var pixelOverlay = document.getElementById("overlay");
+
+// --Exact Overlay Scaling--
+var pixelWidthGroup = document.createElement("form-group");
+pixelWidthGroup.style.display = "block";
+pixelWidth = document.createElement("input");
+pixelWidth.type = "number";
+pixelWidth.style.width = "60px";
+pixelWidth.addEventListener('change', (event) => { pixelOverlay.style.width = pixelWidth.value + "px"; });
+var pixelHeightGroup = document.createElement("form-group");
+pixelHeightGroup.style.display = "block";
+pixelHeight = document.createElement("input");
+pixelHeight.type = "number";
+pixelHeight.style.width = "60px";
+pixelHeight.addEventListener('change', (event) => { pixelOverlay.style.height = pixelHeight.value + "px"; });
+
+pixelOptions.appendChild(document.createTextNode("\nOverlay Width & Height\n"));
+pixelWidthGroup.appendChild(pixelWidth);
+pixelWidthGroup.appendChild(document.createTextNode("Width"));
+pixelHeightGroup.appendChild(pixelHeight);
+pixelHeightGroup.appendChild(document.createTextNode("Height"));
+pixelOptions.appendChild(pixelWidthGroup);
+pixelOptions.appendChild(pixelHeightGroup);
 
 // --Message Expander--
 var pixelMessagesGroup = document.createElement("form-group");
@@ -26,7 +55,7 @@ pixelMessagesInput.style.width = "60px";
 pixelMessagesInput.addEventListener('change', (event) => { pixelMessages.style.height = pixelMessagesInput.value + "px"; });
 pixelMessagesGroup.appendChild(pixelMessagesInput);
 pixelMessagesGroup.appendChild(document.createTextNode("Chat Height"));
-pixelSidebar.appendChild(pixelMessagesGroup);
+pixelOptions.appendChild(pixelMessagesGroup);
 
 // --Pixel Preview--
 var pixelPreviewEnabled = false;
@@ -93,7 +122,7 @@ pixelPreview.addEventListener('change', (event) => {
 // Append
 pixelPreviewGroup.appendChild(pixelPreview);
 pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
-pixelSidebar.appendChild(pixelPreviewGroup);
+pixelOptions.appendChild(pixelPreviewGroup);
 
 // --Sidebar Toggle--
 var pixelSidebarOpen = true;
@@ -121,3 +150,6 @@ if (pixelSidebarOpen) {
 }
 });
 document.body.appendChild(pixelSidebarButton);
+
+// --Url Selector Placeholder Text--
+document.getElementById("urlSelector").placeholder = "https://example.com/image.png";
