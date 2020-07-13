@@ -94,3 +94,30 @@ pixelPreview.addEventListener('change', (event) => {
 pixelPreviewGroup.appendChild(pixelPreview);
 pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
 pixelSidebar.appendChild(pixelPreviewGroup);
+
+// --Sidebar Toggle--
+var pixelSidebarOpen = true;
+var pixelSidebarButton = document.createElement("h2");
+pixelSidebarButton.innerText = "◄"
+pixelSidebarButton.style.position = "absolute";
+pixelSidebarButton.style.left = "0%";
+pixelSidebarButton.style.bottom = "-1.5%";
+pixelSidebarButton.style.zIndex = "100";
+pixelSidebarButton.style.color = "white";
+pixelSidebarButton.style.background = "#2e2c2c";
+
+pixelSidebarButton.addEventListener('click', (event) => {
+if (pixelSidebarOpen) {
+	pixelSidebarOpen = !pixelSidebarOpen;
+	pixelSidebar.style.width = "0%";
+	pixelSidebarButton.innerText = "►"
+	pixelSidebar.style.transition = "height, 0.1s linear";
+} else {
+	pixelSidebarOpen = !pixelSidebarOpen;
+	pixelSidebar.style.width = "";
+	pixelSidebarButton.innerText = "◄";
+	pixelSidebar.style.transition = "height, 0.1s linear";
+
+}
+});
+document.body.appendChild(pixelSidebarButton);
