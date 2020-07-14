@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.3
+// @version        1.3.1
 // ==/UserScript==
 
 
@@ -141,11 +141,13 @@ if (pixelSidebarOpen) {
 	pixelSidebar.style.width = "0%";
 	pixelSidebarButton.innerText = "►"
 	pixelSidebar.style.transition = "height, 0.1s linear";
+	document.getElementsByClassName("pallete")[0].style.margin = "0px";
 } else {
 	pixelSidebarOpen = !pixelSidebarOpen;
 	pixelSidebar.style.width = "";
 	pixelSidebarButton.innerText = "◄";
 	pixelSidebar.style.transition = "height, 0.1s linear";
+	document.getElementsByClassName("pallete")[0].style.marginLeft = "";
 
 }
 });
