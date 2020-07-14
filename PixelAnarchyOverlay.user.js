@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.3.1
+// @version        1.4
 // ==/UserScript==
 
 
@@ -155,3 +155,30 @@ document.body.appendChild(pixelSidebarButton);
 
 // --Url Selector Placeholder Text--
 document.getElementById("urlSelector").placeholder = "https://example.com/image.png";
+
+// --Color Hotkeys--
+pixelPalleteCheckbox = document.createElement("input");
+pixelPalleteCheckbox.type = "checkbox";
+pixelPalleteCheckbox.checked = true;
+var pixelPalleteGroup = document.createElement("form-group");
+pixelPalleteGroup.style.display = "block";
+
+var pixelPalleteIndex = 0;
+window.addEventListener ("keydown", function (e) {
+	if (pixelPalleteCheckbox.checked) {
+    		e.preventDefault();
+    		if (e.which === 122) {
+			if (pixelPalleteIndex == 0) { pixelPalleteIndex = 29; }
+			else { pixelPalleteIndex -= 1; }
+    		} else if (e.which == 123) {
+			if (pixelPalleteIndex == 29) { pixelPalleteIndex = 0; }
+			else { pixelPalleteIndex += 1; }
+		}
+    		[...document.getElementsByClassName('btnbelow')][pixelPalleteIndex].click();
+	}
+} );
+
+pixelPalleteGroup.appendChild(pixelPalleteCheckbox);
+pixelPalleteGroup.appendChild(document.createTextNode("Toggle Pallete Cycle"));
+pixelOptions.appendChild(pixelPalleteGroup);
+
