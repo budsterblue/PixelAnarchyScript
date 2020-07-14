@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.4.1
+// @version        1.4.2
 // ==/UserScript==
 
 
@@ -130,10 +130,12 @@ var pxSidebarButton = document.createElement("h2");
 pxSidebarButton.innerText = "◄"
 pxSidebarButton.style.position = "absolute";
 pxSidebarButton.style.left = "0%";
-pxSidebarButton.style.bottom = "-1.5%";
+pxSidebarButton.style.bottom = "0%";
 pxSidebarButton.style.zIndex = "100";
 pxSidebarButton.style.color = "white";
 pxSidebarButton.style.background = "#2e2c2c";
+pxSidebarButton.style.marginLeft = "0px";
+pxSidebarButton.style.marginBottom = "0px";
 
 pxSidebarButton.addEventListener('click', (event) => {
 if (pxSidebarOpen) {
