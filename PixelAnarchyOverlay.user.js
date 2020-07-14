@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Pixel Anarchy Script
-// @namespace      pixel_anarchy_image_overlay
+// @namespace      pixel_anarchy_script
 // @description    Miscellaneous tools for the site Pixel Anarchy Online
 // @author 	   Budsterblue
 // @include        http://*.pixelanarchy.online/*
@@ -12,72 +12,72 @@
 
 
 // --Commonly used variables--
-var pixelCanvas = document.getElementById("scale");
-var pixelSidebar = document.getElementById("sidenav");
-pixelSidebar.style.color = "white";
-var pixelOptions = document.createElement("details");
-var pixelSummary = document.createElement("summary");
-pixelSummary.style.outline = "none";
-pixelSummary.innerText = "Budsterblue's Options";
-pixelOptions.appendChild(pixelSummary);
-pixelSidebar.appendChild(pixelOptions);
-var pixelOverlay = document.getElementById("overlay");
+var pxScale = document.getElementById("scale");
+var pxSidebar = document.getElementById("sidenav");
+pxSidebar.style.color = "white";
+var pxOptions = document.createElement("details");
+var pxSummary = document.createElement("summary");
+pxSummary.style.outline = "none";
+pxSummary.innerText = "Budsterblue's Options";
+pxOptions.appendChild(pxSummary);
+pxSidebar.appendChild(pxOptions);
+var pxOverlay = document.getElementById("overlay");
+pxOverlay.crossOrigin = "anonymous";
 
 // --Exact Overlay Scaling--
-var pixelWidthGroup = document.createElement("form-group");
-pixelWidthGroup.style.display = "block";
-pixelWidth = document.createElement("input");
-pixelWidth.type = "number";
-pixelWidth.style.width = "60px";
-pixelWidth.addEventListener('change', (event) => { pixelOverlay.style.width = pixelWidth.value + "px"; });
-var pixelHeightGroup = document.createElement("form-group");
-pixelHeightGroup.style.display = "block";
-pixelHeight = document.createElement("input");
-pixelHeight.type = "number";
-pixelHeight.style.width = "60px";
-pixelHeight.addEventListener('change', (event) => { pixelOverlay.style.height = pixelHeight.value + "px"; });
+var pxWidthGroup = document.createElement("form-group");
+pxWidthGroup.style.display = "block";
+pxWidth = document.createElement("input");
+pxWidth.type = "number";
+pxWidth.style.width = "60px";
+pxWidth.addEventListener('change', (event) => { pxOverlay.style.width = pxWidth.value + "px"; });
+var pxHeightGroup = document.createElement("form-group");
+pxHeightGroup.style.display = "block";
+pxHeight = document.createElement("input");
+pxHeight.type = "number";
+pxHeight.style.width = "60px";
+pxHeight.addEventListener('change', (event) => { pxOverlay.style.height = pxHeight.value + "px"; });
 
-pixelOptions.appendChild(document.createTextNode("\nOverlay Width & Height\n"));
-pixelWidthGroup.appendChild(pixelWidth);
-pixelWidthGroup.appendChild(document.createTextNode("Width"));
-pixelHeightGroup.appendChild(pixelHeight);
-pixelHeightGroup.appendChild(document.createTextNode("Height"));
-pixelOptions.appendChild(pixelWidthGroup);
-pixelOptions.appendChild(pixelHeightGroup);
+pxOptions.appendChild(document.createTextNode("\nOverlay Width & Height\n"));
+pxWidthGroup.appendChild(pxWidth);
+pxWidthGroup.appendChild(document.createTextNode("Width"));
+pxHeightGroup.appendChild(pxHeight);
+pxHeightGroup.appendChild(document.createTextNode("Height"));
+pxOptions.appendChild(pxWidthGroup);
+pxOptions.appendChild(pxHeightGroup);
 
 // --Message Expander--
-var pixelMessagesGroup = document.createElement("form-group");
-pixelMessagesGroup.style.display = "block";
-var pixelMessages = document.getElementById("messages");
-var pixelMessagesInput = document.createElement("input");
-pixelMessagesInput.type = "number";
-pixelMessagesInput.style.width = "60px";
-pixelMessagesInput.addEventListener('change', (event) => { pixelMessages.style.height = pixelMessagesInput.value + "px"; });
-pixelMessagesGroup.appendChild(pixelMessagesInput);
-pixelMessagesGroup.appendChild(document.createTextNode("Chat Height"));
-pixelOptions.appendChild(pixelMessagesGroup);
+var pxMessagesGroup = document.createElement("form-group");
+pxMessagesGroup.style.display = "block";
+var pxMessages = document.getElementById("messages");
+var pxMessagesInput = document.createElement("input");
+pxMessagesInput.type = "number";
+pxMessagesInput.style.width = "60px";
+pxMessagesInput.addEventListener('change', (event) => { pxMessages.style.height = pxMessagesInput.value + "px"; });
+pxMessagesGroup.appendChild(pxMessagesInput);
+pxMessagesGroup.appendChild(document.createTextNode("Chat Height"));
+pxOptions.appendChild(pxMessagesGroup);
 
 // --Pixel Preview--
-var pixelPreviewEnabled = false;
-//document.getElementById("myCanvas").style.cursor = "";
-var pixelPreviewGroup = document.createElement("form-group");
-pixelPreviewGroup.style.display = "block";
-var pixelPreview = document.createElement("input");
-pixelPreview.type = "checkbox";
+var pxPreviewEnabled = false;
+var pxPreviewGroup = document.createElement("form-group");
+pxPreviewGroup.style.display = "block";
+var pxPreview = document.createElement("input");
+pxPreview.type = "checkbox";
 // Canvas
-var pixelPreviewCanvas = document.createElement("canvas");
-pixelPreviewCanvas.width = 40;
-pixelPreviewCanvas.height = 40;
-var pixelCtx = pixelPreviewCanvas.getContext('2d');
-pixelCtx.strokeStyle = "gray";
-pixelCtx.lineWidth = 2;
-pixelCtx.fillStyle = "#FFFFFF";
+var pxPreviewCanvas = document.createElement("canvas");
+pxPreviewCanvas.width = 40;
+pxPreviewCanvas.height = 40;
+var pxCtx = pxPreviewCanvas.getContext('2d');
+pxCtx.strokeStyle = "gray";
+pxCtx.lineWidth = 2;
+pxCtx.fillStyle = "#FFFFFF";
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
 [...document.getElementsByClassName('btnbelow')].forEach(function(elem){
     elem.addEventListener('click',function(e){
-    if (pixelPreviewEnabled){
+    if (pxPreviewEnabled){
         if (e.srcElement.id == "mix"){
-            var gradient = pixelCtx.createLinearGradient(0, 0, 30, 0);
+            var gradient = pxCtx.createLinearGradient(0, 0, 30, 0);
             gradient.addColorStop(0, 'red');
             gradient.addColorStop(1 / 6, 'orange');
             gradient.addColorStop(2 / 6, 'yellow');
@@ -85,100 +85,149 @@ pixelCtx.fillStyle = "#FFFFFF";
             gradient.addColorStop(4 / 6, 'blue');
             gradient.addColorStop(5 / 6, 'indigo');
             gradient.addColorStop(1, 'violet');
-            pixelCtx.fillStyle = gradient;
+            pxCtx.fillStyle = gradient;
         } else{
-            pixelCtx.fillStyle = e.srcElement.id;
+            pxCtx.fillStyle = e.srcElement.id;
         }
-        pixelCtx.moveTo(2,2);
-        pixelCtx.lineTo(18,20);
-        pixelCtx.lineTo(2,26);
-        pixelCtx.lineTo(2,1);
-        pixelCtx.stroke();
-        pixelCtx.fill();
-        pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
+        pxCtx.moveTo(2,2);
+        pxCtx.lineTo(18,20);
+        pxCtx.lineTo(2,26);
+        pxCtx.lineTo(2,1);
+        pxCtx.stroke();
+        pxCtx.fill();
+        pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto';
     
         }
     })
 })
 
 // State
-pixelPreview.addEventListener('change', (event) => {
+pxPreview.addEventListener('change', (event) => {
   if (event.target.checked) {
     document.getElementById("myCanvas").style.cursor = "";
-    pixelPreviewEnabled = true;
-    pixelCtx.moveTo(2,2);
-    pixelCtx.lineTo(18,20);
-    pixelCtx.lineTo(2,26);
-    pixelCtx.lineTo(2,1);
-    pixelCtx.stroke();
-    pixelCtx.fill();
-    pixelCanvas.style.cursor = 'url(' + pixelPreviewCanvas.toDataURL() + '), auto';
+    pxPreviewEnabled = true;
+    pxCtx.moveTo(2,2);
+    pxCtx.lineTo(18,20);
+    pxCtx.lineTo(2,26);
+    pxCtx.lineTo(2,1);
+    pxCtx.stroke();
+    pxCtx.fill();
+    pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto';
   } else {
     document.getElementById("myCanvas").style.cursor = "crosshair";
-    pixelPreviewEnabled = false;
-    pixelCanvas.style.cursor = "pointer";
+    pxPreviewEnabled = false;
+    pxScale.style.cursor = "pointer";
   }
 });
 // Append
-pixelPreviewGroup.appendChild(pixelPreview);
-pixelPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
-pixelOptions.appendChild(pixelPreviewGroup);
+pxPreviewGroup.appendChild(pxPreview);
+pxPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
+pxOptions.appendChild(pxPreviewGroup);
 
 // --Sidebar Toggle--
-var pixelSidebarOpen = true;
-var pixelSidebarButton = document.createElement("h2");
-pixelSidebarButton.innerText = "◄"
-pixelSidebarButton.style.position = "absolute";
-pixelSidebarButton.style.left = "0%";
-pixelSidebarButton.style.bottom = "-1.5%";
-pixelSidebarButton.style.zIndex = "100";
-pixelSidebarButton.style.color = "white";
-pixelSidebarButton.style.background = "#2e2c2c";
+var pxSidebarOpen = true;
+var pxSidebarButton = document.createElement("h2");
+pxSidebarButton.innerText = "◄"
+pxSidebarButton.style.position = "absolute";
+pxSidebarButton.style.left = "0%";
+pxSidebarButton.style.bottom = "-1.5%";
+pxSidebarButton.style.zIndex = "100";
+pxSidebarButton.style.color = "white";
+pxSidebarButton.style.background = "#2e2c2c";
 
-pixelSidebarButton.addEventListener('click', (event) => {
-if (pixelSidebarOpen) {
-	pixelSidebarOpen = !pixelSidebarOpen;
-	pixelSidebar.style.width = "0%";
-	pixelSidebarButton.innerText = "►"
-	pixelSidebar.style.transition = "height, 0.1s linear";
+pxSidebarButton.addEventListener('click', (event) => {
+if (pxSidebarOpen) {
+	pxSidebarOpen = !pxSidebarOpen;
+	pxSidebar.style.width = "0%";
+	pxSidebarButton.innerText = "►"
+	pxSidebar.style.transition = "height, 0.1s linear";
 	document.getElementsByClassName("pallete")[0].style.margin = "0px";
 } else {
-	pixelSidebarOpen = !pixelSidebarOpen;
-	pixelSidebar.style.width = "";
-	pixelSidebarButton.innerText = "◄";
-	pixelSidebar.style.transition = "height, 0.1s linear";
+	pxSidebarOpen = !pxSidebarOpen;
+	pxSidebar.style.width = "";
+	pxSidebarButton.innerText = "◄";
+	pxSidebar.style.transition = "height, 0.1s linear";
 	document.getElementsByClassName("pallete")[0].style.marginLeft = "";
 
 }
 });
-document.body.appendChild(pixelSidebarButton);
+document.body.appendChild(pxSidebarButton);
 
 // --Url Selector Placeholder Text--
 document.getElementById("urlSelector").placeholder = "https://example.com/image.png";
 
 // --Color Hotkeys--
-pixelPalleteCheckbox = document.createElement("input");
-pixelPalleteCheckbox.type = "checkbox";
-pixelPalleteCheckbox.checked = true;
-var pixelPalleteGroup = document.createElement("form-group");
-pixelPalleteGroup.style.display = "block";
+pxPalleteCheckbox = document.createElement("input");
+pxPalleteCheckbox.type = "checkbox";
+pxPalleteCheckbox.checked = true;
+var pxPalleteGroup = document.createElement("form-group");
+pxPalleteGroup.style.display = "block";
 
-var pixelPalleteIndex = 0;
+var pxPalleteIndex = 0;
 window.addEventListener ("keydown", function (e) {
-	if (pixelPalleteCheckbox.checked) {
-    		e.preventDefault();
+	if (pxPalleteCheckbox.checked) {
     		if (e.which === 122) {
-			if (pixelPalleteIndex == 0) { pixelPalleteIndex = 29; }
-			else { pixelPalleteIndex -= 1; }
+			e.preventDefault();
+			if (pxPalleteIndex == 0) { pxPalleteIndex = 29; }
+			else { pxPalleteIndex -= 1; }
     		} else if (e.which == 123) {
-			if (pixelPalleteIndex == 29) { pixelPalleteIndex = 0; }
-			else { pixelPalleteIndex += 1; }
+			e.preventDefault();
+			if (pxPalleteIndex == 29) { pxPalleteIndex = 0; }
+			else { pxPalleteIndex += 1; }
 		}
-    		[...document.getElementsByClassName('btnbelow')][pixelPalleteIndex].click();
+    		[...document.getElementsByClassName('btnbelow')][pxPalleteIndex].click();
 	}
 } );
 
-pixelPalleteGroup.appendChild(pixelPalleteCheckbox);
-pixelPalleteGroup.appendChild(document.createTextNode("Toggle Pallete Cycle"));
-pixelOptions.appendChild(pixelPalleteGroup);
+pxPalleteGroup.appendChild(pxPalleteCheckbox);
+pxPalleteGroup.appendChild(document.createTextNode("Toggle Pallete Cycle"));
+pxOptions.appendChild(pxPalleteGroup);
 
+// --Overlay Comparison--
+// Values Reference
+// red = pxOverlayPixels[i]
+// green = pxOverlayPixels[i+1]
+// blue = pxOverlayPixels[i+2]
+// alpha = pxOverlayPixels[i+3]
+
+// Defines
+/*var pxCanvas = document.getElementById("myCanvas");
+var pxCanvasCtx = pxCanvas.getContext('2d');
+var pxOverlayCanvas = document.createElement("canvas");
+pxOverlayCanvas.width = pxCanvas.width;
+pxOverlayCanvas.height = pxCanvas.height;
+var pxOverlayCtx = pxOverlayCanvas.getContext('2d');
+
+pxCompareButton = document.createElement("button");
+pxCompareButton.addEventListener ("click", function () {
+	// Canvas
+	var pxCanvasData = pxCanvasCtx.getImageData(0, 0, pxCanvas.width, pxCanvas.height);
+	var pxCanvasPixels = pxCanvasData.data;
+	// Overlay
+	pxOverlayCtx.drawImage(pxOverlay, document.getElementById("offsetX").value, document.getElementById("offsetX").value);
+	var pxOverlayData = pxOverlayCtx.getImageData(0, 0, pxOverlayCanvas.width, pxOverlayCanvas.height);
+	var pxOverlayPixels = pxOverlayData.data;
+
+	// Compare
+	var pxPixelsNotEqual = [];
+	for (var i = 0; i < pxOverlayPixels.length; i += 4) {
+		var pxEqual = true;
+		for (var j = 0; j < 4; j++){
+			if (i == 12){
+				console.log([pxOverlayPixels[i], pxOverlayPixels[i+1], pxOverlayPixels[i+2], pxOverlayPixels[i+3]]);
+			}
+			if ( pxOverlayPixels[i+j] != pxCanvasPixels[i+j]){
+				pxEqual = false;
+			}	
+		}
+		if (!pxEqual){
+			if (i != 0) {
+				pxPixelsNotEqual.push(i/4);
+			} else { pxPixelsNotEqual.push(i); }
+		}
+	}
+	console.log(pxPixelsNotEqual);
+});
+
+// Appends
+pxOptions.appendChild(pxCompareButton);*/
