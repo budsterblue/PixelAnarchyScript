@@ -189,7 +189,7 @@ pxPalleteGroup.appendChild(document.createTextNode("Toggle Pallete Cycle"));
 pxOptions.appendChild(pxPalleteGroup);
 
 // --Grid Fix--
-document.getElementsByClassName('grid')[0].src = 'https://github.com/bs2kbs2k/PAT/raw/master/grid.svg'
+//document.getElementsByClassName('grid')[0].src = 'https://github.com/bs2kbs2k/PAT/raw/master/grid.svg'
 
 // --Opacity Fade In-Out--
 pxOpacityCheckbox = document.createElement("input");
