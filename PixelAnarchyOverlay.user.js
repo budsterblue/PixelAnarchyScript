@@ -7,12 +7,13 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.4.3
+// @version        1.5
 // ==/UserScript==
 
 
 // --Commonly used variables--
 var pxScale = document.getElementById("scale");
+var pxCanvas = document.getElementById("myCanvas");
 var pxSidebar = document.getElementById("sidenav");
 pxSidebar.style.color = "white";
 var pxOptions = document.createElement("details");
@@ -189,6 +190,35 @@ pxOptions.appendChild(pxPalleteGroup);
 
 // --Grid Fix--
 document.getElementsByClassName('grid')[0].src = 'https://github.com/bs2kbs2k/PAT/raw/master/grid.svg'
+
+// --Opacity Fade In-Out--
+pxOpacityCheckbox = document.createElement("input");
+pxOpacityCheckbox.type = "checkbox";
+var pxOpacityGroup = document.createElement("form-group");
+pxOpacityGroup.style.display = "block";
+
+var opacityState = true;
+function opacityFade() {
+        //pxOverlay.style.transition = "opacity, 0.5s ease";
+        if (opacityState) { pxOverlay.style.opacity = "0.3"; opacityState = false; }
+        else { pxOverlay.style.opacity = "0.8"; opacityState = true; }
+}
+
+var pxOverlayInterval = "";
+pxOpacityCheckbox.addEventListener('change', (event) => {
+        if (event.target.checked){
+                pxOverlay.style.transition = "opacity, 1s linear";
+                pxOverlayInterval = setInterval(opacityFade, 1200);
+        }
+        else {
+                pxOverlay.style.transition = "";
+                clearInterval(pxOverlayInterval);
+        }
+});
+
+pxOpacityGroup.appendChild(pxOpacityCheckbox);
+pxOpacityGroup.appendChild(document.createTextNode("Toggle Opacity Fade"));
+pxOptions.appendChild(pxOpacityGroup);
 
 // --Overlay Comparison--
 // Values Reference
