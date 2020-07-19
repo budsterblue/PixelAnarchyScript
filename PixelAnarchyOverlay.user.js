@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.6
+// @version        1.7
 // ==/UserScript==
 
 
@@ -69,7 +69,6 @@ pxMessagesGroup.appendChild(document.createTextNode("Chat Height"));
 pxOptions.appendChild(pxMessagesGroup);
 
 // --Pixel Preview--
-//var pxPreviewEnabled = true;
 var pxPreviewGroup = document.createElement("form-group");
 pxPreviewGroup.style.display = "block";
 var pxPreview = document.createElement("input");
@@ -201,12 +200,13 @@ pxSidebarSvg.addEventListener('click',function(e){
 document.getElementById("urlSelector").placeholder = "https://example.com/image.png";
 
 // --Color Hotkeys--
+// Defines
 pxPalleteCheckbox = document.createElement("input");
 pxPalleteCheckbox.type = "checkbox";
 pxPalleteCheckbox.checked = true;
 var pxPalleteGroup = document.createElement("form-group");
 pxPalleteGroup.style.display = "block";
-
+// Logic
 var pxPalleteIndex = 0;
 window.addEventListener ("keydown", function (e) {
 	if (pxPalleteCheckbox.checked) {
@@ -223,13 +223,25 @@ window.addEventListener ("keydown", function (e) {
 		}
 	}
 } );
-
+// Appends
 pxPalleteGroup.appendChild(pxPalleteCheckbox);
 pxPalleteGroup.appendChild(document.createTextNode("Toggle Pallete Cycle"));
 pxOptions.appendChild(pxPalleteGroup);
 
 // --Grid Fix--
-//document.getElementsByClassName('grid')[0].src = 'https://github.com/bs2kbs2k/PAT/raw/master/grid.svg'
+var pxGridObserver = new MutationObserver(function (mutations, me) {
+  var grid = document.getElementsByClassName("grid")[0];
+  if (grid) {
+    grid.src = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NzYwIiBoZWlnaHQ9IjMyNDAiPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDEgMCBMIDAgMCAwIDEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iZ3JheSIgc3Ryb2tlLXdpZHRoPSIwLjA2MjUiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4";
+    me.disconnect();
+    return;
+  }
+});
+
+pxGridObserver.observe(document, {
+  childList: true,
+  subtree: true
+});
 
 // --Opacity Fade In-Out--
 pxOpacityCheckbox = document.createElement("input");
@@ -274,7 +286,6 @@ pxOverlayCanvas.height = pxCanvas.height;
 var pxOverlayCtx = pxOverlayCanvas.getContext('2d');
 var pxWarningImg = new Image();
 pxWarningImg.src = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Exclamation_mark_2.svg";
-
 pxCompareButton = document.createElement("button");
 pxCompareButton.addEventListener ("click", function () {
 	// Canvas
@@ -306,10 +317,10 @@ pxCompareButton.addEventListener ("click", function () {
 	var pxArr = [];
 	pxPixelsNotEqual.forEach(pixel => pxArr.push( (pixel % pxCanvas.width) + "," + Math.floor(pixel / pxCanvas.width)));
 	console.log(pxArr);
-	pxPixelsNotEqual.forEach(pixel => pxOverlayCtx.drawImage(pxWarningImg, (pixel % pxCanvas.width), Math.floor(pixel / pxCanvas.width)));
-	//pxOverlayCtx.drawImage(pxWarningImg, pxWarningX, pxWarningY, 1, 1);
+	pxPixelsNotEqual.forEach(pixel => pxOverlayCtx.drawImage(pxWarningImg, (pixel % pxCanvas.width), Math.floor(pixel / pxCanvas.width), 2, 2));
 	//pxOverlayCanvas.putImageData( id, x, y );
 });
 
 // Appends
-pxOptions.appendChild(pxCompareButton);*/
+pxOptions.appendChild(pxCompareButton);
+pxScale.appendChild(pxOverlayCanvas);*/
