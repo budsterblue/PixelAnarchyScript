@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.8
+// @version        1.8.1
 // ==/UserScript==
 
 
@@ -132,70 +132,13 @@ pxPreviewGroup.appendChild(pxPreview);
 pxPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
 pxOptions.appendChild(pxPreviewGroup);
 
-// --Sidebar Toggle (adapted from bs2k's implementation)--
-// Style Additions
-pxSidebar.style.transition = "all 1s";
-pxPallete.style.transition = "all 1s";
-// Div
-pxSidebarButton = document.createElement("div");
-pxSidebarButton.style.width = "250px";
-pxSidebarButton.style.height = "50px";
-pxSidebarButton.style.top = "0";
-pxSidebarButton.style.left = "0";
-pxSidebarButton.style.bottom = "0";
-pxSidebarButton.style.transition = "all 1s";
-pxSidebarButton.style.overflow = "visible";
-pxSidebarButton.style.margin = "auto";
-pxSidebarButton.style.position = "absolute";
-document.getElementsByClassName("game")[0].appendChild(pxSidebarButton);
-// Svg
-pxSidebarSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-pxSidebarSvg.setAttribute("width", "15");
-pxSidebarSvg.setAttribute("height", "50");
-pxSidebarSvg.style.float = "right";
-pxSidebarSvg.style.color = "gray";
-pxSidebarSvg.style.position = "relative";
-pxSidebarSvg.style.left = "15px";
-pxSidebarSvg.style.zIndex = "999";
-pxSidebarButton.appendChild(pxSidebarSvg);
-// Rect 1
-var pxSidebarRect1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-pxSidebarRect1.setAttribute("width", "15");
-pxSidebarRect1.setAttribute("height", "50");
-pxSidebarRect1.style.fill = "#2e2c2c";
-pxSidebarRect1.style.rx = "5";
-pxSidebarRect1.style.ry = "5";
-pxSidebarSvg.appendChild(pxSidebarRect1);
-// Rect 2
-var pxSidebarRect2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-pxSidebarRect2.setAttribute("x", "0");
-pxSidebarRect2.setAttribute("y", "-10");
-pxSidebarRect2.setAttribute("width", "10");
-pxSidebarRect2.setAttribute("height", "100");
-pxSidebarRect2.style.fill = "#2e2c2c";
-pxSidebarRect2.style.rx = "5";
-pxSidebarRect2.style.ry = "5";
-pxSidebarSvg.appendChild(pxSidebarRect2);
-// Triangle
-pxSidebarTriangle = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-pxSidebarTriangle.setAttribute("points", "10,20 10,30 4,25");
-pxSidebarTriangle.style.fill = "#fff";
-pxSidebarSvg.appendChild(pxSidebarTriangle);
-// Logic
-window.sidebarShown = true;
-pxSidebarSvg.addEventListener('click',function(e){
+// --Sidebar Toggle Arrow--
+var pxSidebarToggle = document.getElementById("toggle");
+pxSidebarToggle.addEventListener('click',function(e){
   if(window.sidebarShown){
-    pxSidebar.style.left = "-250px";
-    pxPallete.style["margin-left"] = "0";
-    pxSidebarButton.style.left = "-250px";
-    pxSidebarTriangle.setAttribute("points", "4,20 4,30 10,25");
-    window.sidebarShown = false;
+	  pxSidebarToggle.childNodes[5].setAttribute("points", "10,20 10,30 4,25");
   } else {
-    pxSidebar.style.left = "0";
-    pxPallete.style["margin-left"] = "250px";
-    pxSidebarButton.style.left = "0";
-    pxSidebarTriangle.setAttribute("points", "10,20 10,30 4,25");
-    window.sidebarShown = true;
+	  pxSidebarToggle.childNodes[5].setAttribute("points", "4,20 4,30 10,25");
   }
 });
 
