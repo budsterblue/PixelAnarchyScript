@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.7
+// @version        1.8
 // ==/UserScript==
 
 
@@ -23,6 +23,7 @@ pxSummary.innerText = "Budsterblue's Options";
 pxOptions.appendChild(pxSummary);
 pxSidebar.appendChild(pxOptions);
 var pxOverlay = document.getElementById("overlay");
+pxOverlay.style.visibility = "hidden";
 var pxPallete = document.getElementsByClassName('pallete')[0];
 
 // --Script Version--
@@ -54,6 +55,8 @@ pxOptions.appendChild(document.createTextNode("Overlay Width & Height"));
 pxAreaGroup.appendChild(pxWidth);
 pxAreaGroup.appendChild(pxHeight);
 pxOptions.appendChild(pxAreaGroup);
+
+// --Overlay Hotkey--
 
 // --Message Expander--
 var pxMessagesGroup = document.createElement("form-group");
@@ -221,11 +224,21 @@ window.addEventListener ("keydown", function (e) {
 			else { pxPalleteIndex += 1; }
 			[...document.getElementsByClassName('btnbelow')][pxPalleteIndex].click();
 		}
+// --Overlay Toggle Hotkey--
+		else if (e.which == 121) {
+			if(pxOverlay.style.visibility == "hidden"){
+				document.getElementById("overlaybutton").checked = true;
+				pxOverlay.style.visibility = "visible";
+			} else {
+				document.getElementById("overlaybutton").checked = false;
+                                pxOverlay.style.visibility = "hidden";
+			}
+		}
 	}
 } );
 // Appends
 pxPalleteGroup.appendChild(pxPalleteCheckbox);
-pxPalleteGroup.appendChild(document.createTextNode("Toggle Pallete Cycle"));
+pxPalleteGroup.appendChild(document.createTextNode("Toggle Keybinds"));
 pxOptions.appendChild(pxPalleteGroup);
 
 // --Grid Fix--
@@ -284,9 +297,19 @@ var pxOverlayCanvas = document.createElement("canvas");
 pxOverlayCanvas.width = pxCanvas.width;
 pxOverlayCanvas.height = pxCanvas.height;
 var pxOverlayCtx = pxOverlayCanvas.getContext('2d');
-var pxWarningImg = new Image();
-pxWarningImg.src = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Exclamation_mark_2.svg";
+//var pxWarningImg = new Image();
+//pxWarningImg.src = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Exclamation_mark_2.svg";
+pxWarningSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+pxWarningSvg.setAttribute("width", pxOverlay.width);
+pxWarningSvg.setAttribute("height", pxOverlay.height);
+pxWarningSvg.style.position = "relative";
+pxWarningSvg.style.left =  document.getElementById("offsetX").value + "px";
+pxWarningSvg.style.top = document.getElementById("offsetY").value -3240 + "px";
+pxWarningSvg.style.zIndex = "999";
+
+//pxSidebarButton.appendChild(pxSidebarSvg);
 pxCompareButton = document.createElement("button");
+pxCompareButton.innerHTML = "Game Crasher (don't touch)";
 pxCompareButton.addEventListener ("click", function () {
 	// Canvas
 	var pxCanvasData = pxCanvasCtx.getImageData(0, 0, pxCanvas.width, pxCanvas.height);
@@ -314,13 +337,25 @@ pxCompareButton.addEventListener ("click", function () {
 			} else { pxPixelsNotEqual.push(i); }
 		}
 	}
-	var pxArr = [];
-	pxPixelsNotEqual.forEach(pixel => pxArr.push( (pixel % pxCanvas.width) + "," + Math.floor(pixel / pxCanvas.width)));
-	console.log(pxArr);
-	pxPixelsNotEqual.forEach(pixel => pxOverlayCtx.drawImage(pxWarningImg, (pixel % pxCanvas.width), Math.floor(pixel / pxCanvas.width), 2, 2));
+	//var pxArr = [];
+	//pxPixelsNotEqual.forEach(pixel => pxArr.push( (pixel % pxCanvas.width) + "," + Math.floor(pixel / pxCanvas.width)));
+	//console.log(pxArr);
+	for (var pixel in pxPixelsNotEqual){
+	//pxPixelsNotEqual.forEach(pixel => 
+		//pxOverlayCtx.drawImage(pxWarningImg, (pixel % pxCanvas.width), Math.floor(pixel / pxCanvas.width), 2, 2)
+		var rect = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+        	rect.setAttributeNS(null, 'cx', x);
+        	rect.setAttributeNS(null, 'cy', y);
+	        rect.setAttributeNS(null, 'r', "3");
+        	rect.setAttributeNS(null, 'stroke', "black");
+	        rect.setAttributeNS(null, 'stroke-width', "1");
+        	rect.setAttributeNS(null, 'fill', '#FF0000');
+        	pxWarningSvg.appendChild(rect);
+	//);
+	}
 	//pxOverlayCanvas.putImageData( id, x, y );
 });
 
 // Appends
 pxOptions.appendChild(pxCompareButton);
-pxScale.appendChild(pxOverlayCanvas);*/
+pxScale.appendChild(pxWarningSvg);*/
