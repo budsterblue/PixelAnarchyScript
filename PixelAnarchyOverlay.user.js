@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.8.1
+// @version        1.8.2
 // ==/UserScript==
 
 
@@ -134,11 +134,12 @@ pxOptions.appendChild(pxPreviewGroup);
 
 // --Sidebar Toggle Arrow--
 var pxSidebarToggle = document.getElementById("toggle");
+pxSidebarToggle.childNodes[5].setAttribute("points", "18,20 18,30 8,25");
 pxSidebarToggle.addEventListener('click',function(e){
   if(window.sidebarShown){
-	  pxSidebarToggle.childNodes[5].setAttribute("points", "10,20 10,30 4,25");
+	  pxSidebarToggle.childNodes[5].setAttribute("points", "18,20 18,30 8,25");
   } else {
-	  pxSidebarToggle.childNodes[5].setAttribute("points", "4,20 4,30 10,25");
+	  pxSidebarToggle.childNodes[5].setAttribute("points", "8,20 8,30 18,25");
   }
 });
 
