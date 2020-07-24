@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.9
+// @version        1.9.1
 // ==/UserScript==
 
 //TODO: Save/Load Settings and Finish Pixel Comparison
@@ -235,34 +235,38 @@ window.addEventListener("load", function () {
 });
 
 // --Brush Size Indicator--
-var pxBrushSizeIndicator = document.createElement("h2");
-pxBrushSizeIndicator.style.position = "relative";
-pxBrushSizeIndicator.style.float = "right";
-pxBrushSizeIndicator.style.marginTop = "0px";
-pxBrushSizeIndicator.style.marginRight = "0.6%";
-pxBrushSizeIndicator.style.display = "inline-block";
-pxBrushSizeIndicator.style.color = "rgb(0, 255, 255)";
-pxBrushSizeIndicator.style.background = "rgb(0, 0, 0, 0.7)";
-pxBrushSizeIndicator.style.padding = "8px";
-pxBrushSizeIndicator.style.borderRadius = "25px";
-pxBrushSizeIndicator.innerHTML = "1x1";
-// Slider
-document.getElementById("brushsize2").addEventListener("change", function () { 
-	if (document.getElementById("textbrush2").childNodes[0].innerHTML.includes("1")) {
+window.addEventListener("load", function () {
+        if (document.getElementById("brushsize2").style.display == "block"){
+		var pxBrushSizeIndicator = document.createElement("h2");
+		pxBrushSizeIndicator.style.position = "relative";
+		pxBrushSizeIndicator.style.float = "right";
+		pxBrushSizeIndicator.style.marginTop = "0px";
+		pxBrushSizeIndicator.style.marginRight = "0.6%";
+		pxBrushSizeIndicator.style.display = "inline-block";
+		pxBrushSizeIndicator.style.color = "rgb(0, 255, 255)";
+		pxBrushSizeIndicator.style.background = "rgb(0, 0, 0, 0.7)";
+		pxBrushSizeIndicator.style.padding = "8px";
+		pxBrushSizeIndicator.style.borderRadius = "25px";
 		pxBrushSizeIndicator.innerHTML = "1x1";
-	} else {
-		pxBrushSizeIndicator.innerHTML = "2x2";
+		// Slider
+		document.getElementById("brushsize2").addEventListener("change", function () { 
+			if (document.getElementById("textbrush2").childNodes[0].innerHTML.includes("1")) {
+				pxBrushSizeIndicator.innerHTML = "1x1";
+			} else {
+				pxBrushSizeIndicator.innerHTML = "2x2";
+			}
+		});
+		// Keybinds
+		window.addEventListener ("keydown", function (e) {
+			if (e.which == 49){
+				pxBrushSizeIndicator.innerHTML = "1x1";
+			} else if (e.which == 50) {
+				pxBrushSizeIndicator.innerHTML = "2x2";
+			}
+		});
+		document.body.appendChild(pxBrushSizeIndicator);
 	}
 });
-// Keybinds
-window.addEventListener ("keydown", function (e) {
-	if (e.which == 49){
-		pxBrushSizeIndicator.innerHTML = "1x1";
-	} else if (e.which == 50) {
-		pxBrushSizeIndicator.innerHTML = "2x2";
-	}
-});
-document.body.appendChild(pxBrushSizeIndicator);
 
 // --Overlay Comparison WIP--
 // Values Reference
