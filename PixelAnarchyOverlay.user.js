@@ -7,9 +7,10 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.8.2
+// @version        1.9
 // ==/UserScript==
 
+//TODO: Save/Load Settings and Finish Pixel Comparison
 
 // --Commonly used variables--
 var pxScale = document.getElementById("scale");
@@ -27,7 +28,7 @@ pxOverlay.style.visibility = "hidden";
 var pxPallete = document.getElementsByClassName('pallete')[0];
 
 // --Script Version--
-pxVersion = document.createElement("h3");
+var pxVersion = document.createElement("h3");
 pxVersion.innerHTML = "Script Version: " + GM.info.script.version;
 pxVersion.style.position = "absolute";
 pxVersion.style.bottom = 0;
@@ -38,13 +39,13 @@ pxSidebar.appendChild(pxVersion);
 var pxAreaGroup = document.createElement("form-group");
 pxAreaGroup.style.display = "block";
 // Width
-pxWidth = document.createElement("input");
+var pxWidth = document.createElement("input");
 pxWidth.type = "number";
 pxWidth.style.width = "60px";
 pxWidth.placeholder = "W";
 pxWidth.addEventListener('change', (event) => { pxOverlay.style.width = pxWidth.value + "px"; });
 // Height
-pxHeight = document.createElement("input");
+var pxHeight = document.createElement("input");
 pxHeight.type = "number";
 pxHeight.style.width = "60px";
 pxHeight.style.marginLeft = "2px";
@@ -55,8 +56,6 @@ pxOptions.appendChild(document.createTextNode("Overlay Width & Height"));
 pxAreaGroup.appendChild(pxWidth);
 pxAreaGroup.appendChild(pxHeight);
 pxOptions.appendChild(pxAreaGroup);
-
-// --Overlay Hotkey--
 
 // --Message Expander--
 var pxMessagesGroup = document.createElement("form-group");
@@ -148,7 +147,7 @@ document.getElementById("urlSelector").placeholder = "https://example.com/image.
 
 // --Color Hotkeys--
 // Defines
-pxPalleteCheckbox = document.createElement("input");
+var pxPalleteCheckbox = document.createElement("input");
 pxPalleteCheckbox.type = "checkbox";
 pxPalleteCheckbox.checked = true;
 var pxPalleteGroup = document.createElement("form-group");
@@ -201,7 +200,7 @@ pxGridObserver.observe(document, {
 });
 
 // --Opacity Fade In-Out--
-pxOpacityCheckbox = document.createElement("input");
+var pxOpacityCheckbox = document.createElement("input");
 pxOpacityCheckbox.type = "checkbox";
 var pxOpacityGroup = document.createElement("form-group");
 pxOpacityGroup.style.display = "block";
@@ -227,6 +226,43 @@ pxOpacityCheckbox.addEventListener('change', (event) => {
 pxOpacityGroup.appendChild(pxOpacityCheckbox);
 pxOpacityGroup.appendChild(document.createTextNode("Toggle Opacity Fade"));
 pxOptions.appendChild(pxOpacityGroup);
+
+// --King Of Chats Blocker--
+window.addEventListener("load", function () { 
+	if (document.getElementById("brushsize2").style.display == "block"){
+        	document.getElementById("chatking").childNodes[0].style.display = "none";
+	}
+});
+
+// --Brush Size Indicator--
+var pxBrushSizeIndicator = document.createElement("h2");
+pxBrushSizeIndicator.style.position = "relative";
+pxBrushSizeIndicator.style.float = "right";
+pxBrushSizeIndicator.style.marginTop = "0px";
+pxBrushSizeIndicator.style.marginRight = "0.6%";
+pxBrushSizeIndicator.style.display = "inline-block";
+pxBrushSizeIndicator.style.color = "rgb(0, 255, 255)";
+pxBrushSizeIndicator.style.background = "rgb(0, 0, 0, 0.7)";
+pxBrushSizeIndicator.style.padding = "8px";
+pxBrushSizeIndicator.style.borderRadius = "25px";
+pxBrushSizeIndicator.innerHTML = "1x1";
+// Slider
+document.getElementById("brushsize2").addEventListener("change", function () { 
+	if (document.getElementById("textbrush2").childNodes[0].innerHTML.includes("1")) {
+		pxBrushSizeIndicator.innerHTML = "1x1";
+	} else {
+		pxBrushSizeIndicator.innerHTML = "2x2";
+	}
+});
+// Keybinds
+window.addEventListener ("keydown", function (e) {
+	if (e.which == 49){
+		pxBrushSizeIndicator.innerHTML = "1x1";
+	} else if (e.which == 50) {
+		pxBrushSizeIndicator.innerHTML = "2x2";
+	}
+});
+document.body.appendChild(pxBrushSizeIndicator);
 
 // --Overlay Comparison WIP--
 // Values Reference
@@ -268,9 +304,6 @@ pxCompareButton.addEventListener ("click", function () {
 	for (var i = 0; i < pxOverlayPixels.length; i += 4) {
 		var pxEqual = true;
 		for (var j = 0; j < 4; j++){
-			if (i == 12){
-				console.log([pxOverlayPixels[i], pxOverlayPixels[i+1], pxOverlayPixels[i+2], pxOverlayPixels[i+3]]);
-			}
 			if ( pxOverlayPixels[i+j] != pxCanvasPixels[i+j]){
 				pxEqual = false;
 			}	
@@ -281,25 +314,43 @@ pxCompareButton.addEventListener ("click", function () {
 			} else { pxPixelsNotEqual.push(i); }
 		}
 	}
-	//var pxArr = [];
+	var pxOverlayStr = "";
 	//pxPixelsNotEqual.forEach(pixel => pxArr.push( (pixel % pxCanvas.width) + "," + Math.floor(pixel / pxCanvas.width)));
 	//console.log(pxArr);
-	for (var pixel in pxPixelsNotEqual){
-	//pxPixelsNotEqual.forEach(pixel => 
+	//for (var pixel in pxPixelsNotEqual){
+	pxPixelsNotEqual.forEach(pixel => 
+		pxOverlayStr += `<circle cx='` + (pixel % pxCanvas.width) + `' cy='` + Math.floor(pixel / pxCanvas.width) + `' r='3' stroke='black' stroke-width='1' fill='#FF0000' />`
+	);
 		//pxOverlayCtx.drawImage(pxWarningImg, (pixel % pxCanvas.width), Math.floor(pixel / pxCanvas.width), 2, 2)
-		var rect = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-        	rect.setAttributeNS(null, 'cx', x);
-        	rect.setAttributeNS(null, 'cy', y);
-	        rect.setAttributeNS(null, 'r', "3");
-        	rect.setAttributeNS(null, 'stroke', "black");
-	        rect.setAttributeNS(null, 'stroke-width', "1");
-        	rect.setAttributeNS(null, 'fill', '#FF0000');
-        	pxWarningSvg.appendChild(rect);
-	//);
-	}
-	//pxOverlayCanvas.putImageData( id, x, y );
+		//var rect = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+        	//rect.setAttributeNS(null, 'cx', x);
+        	//rect.setAttributeNS(null, 'cy', y);
+	        //rect.setAttributeNS(null, 'r', "3");
+        	//rect.setAttributeNS(null, 'stroke', "black");
+	        //rect.setAttributeNS(null, 'stroke-width', "1");
+        	//rect.setAttributeNS(null, 'fill', '#FF0000');
+        	//pxWarningSvg.appendChild(rect);
+	//}
+	//console.log(pxOverlayStr)
+	pxWarningSvg.innerHTML = pxOverlayStr;
+
 });
 
 // Appends
 pxOptions.appendChild(pxCompareButton);
 pxScale.appendChild(pxWarningSvg);*/
+
+// --Import/Export/Save/Load Settings--
+// Save
+// for reference, to get all items in localstorage use: const items = { ...localStorage }; or JSON.stringify(localStorage);
+/*var pxStorage = window.localStorage;
+// Overlay Button
+var pxStorageOverlayButton = document.createElement("button");
+pxStorageOverlayButton.innerHTML = "Overlay Toggle";
+pxStorageOverlayButton.addEventListener ("click", function () { pxStorage.setItem( "overlaybutton", document.getElementById("overlaybutton").checked ) } );
+pxOptions.appendChild(pxStorageOverlayButton);
+// Overlay Source
+var pxStorageOverlaySource = document.createElement("button");
+pxStorageOverlaySource.innerHTML = "Overlay Source";
+pxStorageOverlaySource.addEventListener ("click", function () { pxStorage.setItem( "overlaybutton", document.getElementById("overlaybutton").checked ) } );
+pxOptions.appendChild(pxStorageOverlaySource);*/
