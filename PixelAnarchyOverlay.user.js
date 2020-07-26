@@ -7,7 +7,7 @@
 // @include        https://pixelanarchy.online/*
 // @match          http://pixelanarchy.online/*
 // @match          https://pixelanarchy.online/*
-// @version        1.9.1
+// @version        1.10
 // ==/UserScript==
 
 //TODO: Save/Load Settings and Finish Pixel Comparison
@@ -22,7 +22,7 @@ var pxSummary = document.createElement("summary");
 pxSummary.style.outline = "none";
 pxSummary.innerText = "Budsterblue's Options";
 pxOptions.appendChild(pxSummary);
-pxSidebar.appendChild(pxOptions);
+pxSidebar.children[0].appendChild(pxOptions);
 var pxOverlay = document.getElementById("overlay");
 pxOverlay.style.visibility = "hidden";
 var pxPallete = document.getElementsByClassName('pallete')[0];
@@ -52,7 +52,7 @@ pxHeight.style.marginLeft = "2px";
 pxHeight.placeholder = "H";
 pxHeight.addEventListener('change', (event) => { pxOverlay.style.height = pxHeight.value + "px"; });
 
-pxOptions.appendChild(document.createTextNode("Overlay Width & Height"));
+pxOptions.append("Overlay Width & Height");
 pxAreaGroup.appendChild(pxWidth);
 pxAreaGroup.appendChild(pxHeight);
 pxOptions.appendChild(pxAreaGroup);
@@ -67,7 +67,7 @@ pxMessagesInput.style.width = "60px";
 pxMessagesInput.style.marginTop = "5px";
 pxMessagesInput.addEventListener('change', (event) => { pxMessages.style.height = pxMessagesInput.value + "px"; });
 pxMessagesGroup.appendChild(pxMessagesInput);
-pxMessagesGroup.appendChild(document.createTextNode("Chat Height"));
+pxMessagesGroup.append("Chat Height");
 pxOptions.appendChild(pxMessagesGroup);
 
 // --Pixel Preview--
@@ -128,7 +128,7 @@ pxPreview.addEventListener('change', (event) => {
 });
 // Append
 pxPreviewGroup.appendChild(pxPreview);
-pxPreviewGroup.appendChild(document.createTextNode("Toggle Preview"));
+pxPreviewGroup.append("Toggle Preview");
 pxOptions.appendChild(pxPreviewGroup);
 
 // --Sidebar Toggle Arrow--
@@ -181,7 +181,7 @@ window.addEventListener ("keydown", function (e) {
 } );
 // Appends
 pxPalleteGroup.appendChild(pxPalleteCheckbox);
-pxPalleteGroup.appendChild(document.createTextNode("Toggle Keybinds"));
+pxPalleteGroup.append("Toggle Keybinds");
 pxOptions.appendChild(pxPalleteGroup);
 
 // --Grid Fix--
@@ -224,15 +224,8 @@ pxOpacityCheckbox.addEventListener('change', (event) => {
 });
 
 pxOpacityGroup.appendChild(pxOpacityCheckbox);
-pxOpacityGroup.appendChild(document.createTextNode("Toggle Opacity Fade"));
+pxOpacityGroup.append("Toggle Opacity Fade");
 pxOptions.appendChild(pxOpacityGroup);
-
-// --King Of Chats Blocker--
-window.addEventListener("load", function () { 
-	if (document.getElementById("brushsize2").style.display == "block"){
-        	document.getElementById("chatking").childNodes[0].style.display = "none";
-	}
-});
 
 // --Brush Size Indicator--
 window.addEventListener("load", function () {
@@ -268,6 +261,19 @@ window.addEventListener("load", function () {
 	}
 });
 
+// --Overlay At Cursor--
+window.addEventListener ("keydown", function (e) {
+	if (e.which == 120) {
+		var pxCursorX, pxCursorY;
+		[,,pxCursorX,,,pxCursorY] = document.getElementById("coords").innerText.split(" ");
+		// X
+		document.getElementById("offsetX").value = pxCursorX;
+		document.getElementById("offsetX").dispatchEvent(new Event('change'))
+		// Y
+		document.getElementById("offsetY").value = pxCursorY;
+		document.getElementById("offsetY").dispatchEvent(new Event('change'))
+	}
+});
 // --Overlay Comparison WIP--
 // Values Reference
 // red = pxOverlayPixels[i]
