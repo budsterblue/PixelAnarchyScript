@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name           Pixel Anarchy Script
+// @namespace      pixel_anarchy_script
 // @description    Miscellaneous tools for the site Pixel Anarchy Online
 // @author 	   Budsterblue
 // @match          *://pixelanarchy.online/*
-// @version        1.10
+// @version        1.11
 // ==/UserScript==
 
 //TODO: Save/Load Settings and Finish Pixel Comparison
@@ -12,64 +13,100 @@
 var pxScale = document.getElementById("scale");
 var pxCanvas = document.getElementById("myCanvas");
 var pxSidebar = document.getElementById("sidenav");
-pxSidebar.style.color = "white";
 var pxOptions = document.createElement("details");
+pxOptions.style.color = "lightblue";
+pxSidebar.children[0].insertBefore(pxOptions, document.getElementById("logout"));
 var pxSummary = document.createElement("summary");
 pxSummary.style.outline = "none";
 pxSummary.innerText = "Budsterblue's Options";
 pxOptions.appendChild(pxSummary);
-pxSidebar.children[0].appendChild(pxOptions);
 var pxOverlay = document.getElementById("overlay");
 pxOverlay.style.visibility = "hidden";
 var pxPallete = document.getElementsByClassName('pallete')[0];
+var pxMessages = document.getElementById("messages");
 
 // --Script Version--
 var pxVersion = document.createElement("h3");
 pxVersion.innerHTML = "Script Version: " + GM.info.script.version;
+pxVersion.style.color = "white";
 pxVersion.style.position = "absolute";
 pxVersion.style.bottom = 0;
 pxVersion.style.marginLeft = "5px";
 pxSidebar.appendChild(pxVersion);
 
-// --Exact Overlay Scaling--
-var pxAreaGroup = document.createElement("form-group");
-pxAreaGroup.style.display = "block";
-// Width
-var pxWidth = document.createElement("input");
-pxWidth.type = "number";
-pxWidth.style.width = "60px";
-pxWidth.placeholder = "W";
-pxWidth.addEventListener('change', (event) => { pxOverlay.style.width = pxWidth.value + "px"; });
-// Height
+// --Options--
+// Toggles Category
+var pxOptionsToggles = document.createElement("details");
+pxOptionsToggles.style.marginTop = "5px";
+pxOptionsToggles.style.marginBottom = "5px";
+pxOptions.appendChild(pxOptionsToggles);
+var pxSummaryToggles = document.createElement("summary");
+pxSummaryToggles.style.outline = "none";
+pxSummaryToggles.innerText = "Toggles";
+pxOptionsToggles.appendChild(pxSummaryToggles);
+// Pixel Preview
+var pxPreview = document.createElement("input");
+pxOptionsToggles.appendChild(pxPreview);
+pxOptionsToggles.append("Preview");
+pxOptionsToggles.appendChild(document.createElement("br")); // Line Break
+// Keybinds
+var pxPalleteCheckbox = document.createElement("input");
+pxOptionsToggles.appendChild(pxPalleteCheckbox);
+pxOptionsToggles.append("Keybinds");
+pxOptionsToggles.appendChild(document.createElement("br")); // Line Break
+// Opacity Fade
+var pxOpacityCheckbox = document.createElement("input");
+pxOptionsToggles.appendChild(pxOpacityCheckbox);
+pxOptionsToggles.append("Opacity Fade");
+// Advanced Options Category
+var pxOptionsAdvanced = document.createElement("details");
+pxOptions.appendChild(pxOptionsAdvanced);
+var pxSummaryAdvanced = document.createElement("summary");
+pxSummaryAdvanced.style.outline = "none";
+pxSummaryAdvanced.innerText = "ADVANCED (Avoid)";
+pxOptionsAdvanced.appendChild(pxSummaryAdvanced);
+// Width & Height
 var pxHeight = document.createElement("input");
+pxOptionsAdvanced.appendChild(pxHeight);
+pxOptionsAdvanced.append("Overlay Height");
+pxOptionsAdvanced.appendChild(document.createElement("br")); // Line Break
+// End Options
+pxSidebar.children[0].insertBefore(document.createElement("br"), document.getElementById("logout"));
+
+// --Exact Overlay Scaling--
+// Height
 pxHeight.type = "number";
 pxHeight.style.width = "60px";
 pxHeight.style.marginLeft = "2px";
 pxHeight.placeholder = "H";
 pxHeight.addEventListener('change', (event) => { pxOverlay.style.height = pxHeight.value + "px"; });
 
-pxOptions.append("Overlay Width & Height");
-pxAreaGroup.appendChild(pxWidth);
-pxAreaGroup.appendChild(pxHeight);
-pxOptions.appendChild(pxAreaGroup);
-
-// --Message Expander--
-var pxMessagesGroup = document.createElement("form-group");
-pxMessagesGroup.style.display = "block";
-var pxMessages = document.getElementById("messages");
-var pxMessagesInput = document.createElement("input");
-pxMessagesInput.type = "number";
-pxMessagesInput.style.width = "60px";
-pxMessagesInput.style.marginTop = "5px";
-pxMessagesInput.addEventListener('change', (event) => { pxMessages.style.height = pxMessagesInput.value + "px"; });
-pxMessagesGroup.appendChild(pxMessagesInput);
-pxMessagesGroup.append("Chat Height");
-pxOptions.appendChild(pxMessagesGroup);
+// --Chat Height--
+pxMessages.style.marginBottom = "0px";
+var pxResizer = document.createElement('div');
+// Styling
+pxResizer.style.width = "100%";
+pxResizer.style.height = "2px";
+pxResizer.style.marginBottom = "10px";
+pxResizer.style.background = "gray";
+pxResizer.style.position = "relative";
+pxResizer.style.cursor = "n-resize";
+pxSidebar.children[0].insertBefore(pxResizer, document.getElementById("chat"));
+// Functions
+pxResizer.addEventListener('mousedown', pxInitResize, false);
+function pxInitResize(e) {
+   window.addEventListener('mousemove', pxResize, false);
+   window.addEventListener('mouseup', pxStopResize, false);
+}
+function pxResize(e) {
+   pxMessages.style.height = (e.clientY - pxMessages.offsetTop) + 'px';
+}
+function pxStopResize(e) {
+    window.removeEventListener('mousemove', pxResize, false);
+    window.removeEventListener('mouseup', pxStopResize, false);
+}
 
 // --Pixel Preview--
-var pxPreviewGroup = document.createElement("form-group");
-pxPreviewGroup.style.display = "block";
-var pxPreview = document.createElement("input");
 pxPreview.type = "checkbox";
 pxPreview.checked = true;
 // Canvas
@@ -80,28 +117,27 @@ var pxCtx = pxPreviewCanvas.getContext('2d');
 pxCtx.strokeStyle = "gray";
 pxCtx.lineWidth = 2;
 pxCtx.fillStyle = "#FFFFFF";
-// First Run
 pxCanvas.style.cursor = "";
-pxCtx.moveTo(2,2);
-pxCtx.lineTo(18,20);
-pxCtx.lineTo(2,26);
-pxCtx.lineTo(2,1);
-pxCtx.stroke();
-pxCtx.fill();
-pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto';
+
+// Function
+function pxPreviewFunction() {
+	pxCtx.moveTo(2,2);
+        pxCtx.lineTo(18,20);
+        pxCtx.lineTo(2,26);
+        pxCtx.lineTo(2,1);
+        pxCtx.stroke();
+        pxCtx.fill();
+        pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto';
+}
+// First Run
+pxPreviewFunction();
 
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
 [...document.getElementsByClassName('btnbelow')].forEach(function(elem){
     elem.addEventListener('click',function(e){
 	pxCtx.fillStyle = e.srcElement.id;
     	if (pxPreview.checked) {
-        	pxCtx.moveTo(2,2);
-        	pxCtx.lineTo(18,20);
-        	pxCtx.lineTo(2,26);
-        	pxCtx.lineTo(2,1);
-        	pxCtx.stroke();
-        	pxCtx.fill();
-        	pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto'; 
+        	pxPreviewFunction();
     	}
     })
 })
@@ -110,31 +146,21 @@ pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto';
 pxPreview.addEventListener('change', (event) => {
   if (event.target.checked) {
     pxCanvas.style.cursor = "";
-    pxCtx.moveTo(2,2);
-    pxCtx.lineTo(18,20);
-    pxCtx.lineTo(2,26);
-    pxCtx.lineTo(2,1);
-    pxCtx.stroke();
-    pxCtx.fill();
-    pxScale.style.cursor = 'url(' + pxPreviewCanvas.toDataURL() + '), auto';
+    pxPreviewFunction();
   } else {
     pxCanvas.style.cursor = "crosshair";
     pxScale.style.cursor = "pointer";
   }
 });
-// Append
-pxPreviewGroup.appendChild(pxPreview);
-pxPreviewGroup.append("Toggle Preview");
-pxOptions.appendChild(pxPreviewGroup);
 
 // --Sidebar Toggle Arrow--
 var pxSidebarToggle = document.getElementById("toggle");
-pxSidebarToggle.childNodes[5].setAttribute("points", "18,20 18,30 8,25");
+pxSidebarToggle.children[2].setAttribute("points", "18,20 18,30 8,25");
 pxSidebarToggle.addEventListener('click',function(e){
   if(window.sidebarShown){
-	  pxSidebarToggle.childNodes[5].setAttribute("points", "18,20 18,30 8,25");
+	  pxSidebarToggle.children[2].setAttribute("points", "18,20 18,30 8,25");
   } else {
-	  pxSidebarToggle.childNodes[5].setAttribute("points", "8,20 8,30 18,25");
+	  pxSidebarToggle.children[2].setAttribute("points", "8,20 8,30 18,25");
   }
 });
 
@@ -142,12 +168,9 @@ pxSidebarToggle.addEventListener('click',function(e){
 document.getElementById("urlSelector").placeholder = "https://example.com/image.png";
 
 // --Color Hotkeys--
-// Defines
-var pxPalleteCheckbox = document.createElement("input");
+// Styling
 pxPalleteCheckbox.type = "checkbox";
 pxPalleteCheckbox.checked = true;
-var pxPalleteGroup = document.createElement("form-group");
-pxPalleteGroup.style.display = "block";
 // Logic
 var pxPalleteIndex = 0;
 window.addEventListener ("keydown", function (e) {
@@ -175,10 +198,6 @@ window.addEventListener ("keydown", function (e) {
 		}
 	}
 } );
-// Appends
-pxPalleteGroup.appendChild(pxPalleteCheckbox);
-pxPalleteGroup.append("Toggle Keybinds");
-pxOptions.appendChild(pxPalleteGroup);
 
 // --Grid Fix--
 var pxGridObserver = new MutationObserver(function (mutations, me) {
@@ -196,11 +215,7 @@ pxGridObserver.observe(document, {
 });
 
 // --Opacity Fade In-Out--
-var pxOpacityCheckbox = document.createElement("input");
 pxOpacityCheckbox.type = "checkbox";
-var pxOpacityGroup = document.createElement("form-group");
-pxOpacityGroup.style.display = "block";
-
 var opacityState = true;
 function opacityFade() {
         if (opacityState) { pxOverlay.style.opacity = "0.3"; opacityState = false; }
@@ -219,10 +234,6 @@ pxOpacityCheckbox.addEventListener('change', (event) => {
         }
 });
 
-pxOpacityGroup.appendChild(pxOpacityCheckbox);
-pxOpacityGroup.append("Toggle Opacity Fade");
-pxOptions.appendChild(pxOpacityGroup);
-
 // --Brush Size Indicator--
 window.addEventListener("load", function () {
         if (document.getElementById("brushsize2").style.display == "block"){
@@ -239,7 +250,7 @@ window.addEventListener("load", function () {
 		pxBrushSizeIndicator.innerHTML = "1x1";
 		// Slider
 		document.getElementById("brushsize2").addEventListener("change", function () { 
-			if (document.getElementById("textbrush2").childNodes[0].innerHTML.includes("1")) {
+			if (document.getElementById("textbrush2").children[0].innerHTML.includes("1")) {
 				pxBrushSizeIndicator.innerHTML = "1x1";
 			} else {
 				pxBrushSizeIndicator.innerHTML = "2x2";
@@ -270,6 +281,21 @@ window.addEventListener ("keydown", function (e) {
 		document.getElementById("offsetY").dispatchEvent(new Event('change'))
 	}
 });
+
+// --Fix Sidebar Spacing--
+//document.getElementById("godview").appendChild(document.querySelector("#sidenav > center > br:nth-child(16)"));
+//document.getElementById("gobacc").appendChild(document.querySelector("#sidenav > center > br:nth-child(17)"));
+
+// --Scale Slider Replace--
+var pxWidth = document.createElement("input");
+pxWidth.addEventListener('change', (event) => { pxOverlay.style.width = pxWidth.value + "px"; });
+pxWidth.type = "number";
+pxWidth.style.color = "blue";
+document.getElementById("scaleImg").style.display = "none";
+document.getElementById("scaleImg").parentElement.insertBefore(pxWidth, document.getElementById("scaleImg"));
+// Modified Text
+document.getElementById("textscale").children[0].innerHTML += "<span style='color:lightblue'> (modified by script)</span>";
+
 // --Overlay Comparison WIP--
 // Values Reference
 // red = pxOverlayPixels[i]
