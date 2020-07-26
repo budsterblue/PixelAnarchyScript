@@ -4,7 +4,7 @@
 // @description    Miscellaneous tools for the site Pixel Anarchy Online
 // @author 	   Budsterblue
 // @match          *://pixelanarchy.online/*
-// @version        1.11
+// @version        1.12
 // ==/UserScript==
 
 //TODO: Save/Load Settings and Finish Pixel Comparison
@@ -22,7 +22,7 @@ pxSummary.innerText = "Budsterblue's Options";
 pxOptions.appendChild(pxSummary);
 var pxOverlay = document.getElementById("overlay");
 pxOverlay.style.visibility = "hidden";
-var pxPallete = document.getElementsByClassName('pallete')[0];
+var pxPalette = document.getElementsByClassName('pallete')[0];
 var pxMessages = document.getElementById("messages");
 
 // --Script Version--
@@ -33,6 +33,36 @@ pxVersion.style.position = "absolute";
 pxVersion.style.bottom = 0;
 pxVersion.style.marginLeft = "5px";
 pxSidebar.appendChild(pxVersion);
+
+// Controls Info
+// The way I'm getting this variable is stupid...
+var pxControls = document.getElementById("id03").children[0].children[1].children[0];
+// Palette
+var pxControlsPalette = document.createElement("li");
+pxControlsPalette.style.color = "blue";
+pxControlsPalette.innerHTML = "Press F11 and F12 to cycle forward and backward through the color palette at the bottom of the screen.";
+pxControls.insertBefore(pxControlsPalette, pxControls.children[9]);
+// Overlay Toggle
+var pxControlsOverlayToggle = document.createElement("li");
+pxControlsOverlayToggle.innerHTML = "Press F10 to toggle between showing and hiding the overlay.";
+pxControlsOverlayToggle.style.color = "blue";
+pxControls.insertBefore(pxControlsOverlayToggle, pxControls.children[9]);
+// Overlay Position
+var pxControlsOverlayPosition = document.createElement("li");
+pxControlsOverlayPosition.innerHTML = "Press F9 to position the overlay at your cursor.";
+pxControlsOverlayPosition.style.color = "blue";
+pxControls.insertBefore(pxControlsOverlayPosition, pxControls.children[9]);
+// Blue Color Tip
+// Header
+var pxControlsTipHeader = document.createElement("h2");
+pxControlsTipHeader.style.color = "blue";
+pxControlsTipHeader.innerHTML = "Blue Colored Text";
+pxControls.insertBefore(pxControlsTipHeader, pxControls.children[13]);
+// Body
+var pxControlsTip = document.createElement("p");
+pxControlsTip.style.color = "blue";
+pxControlsTip.innerHTML = "You can tell what stuff is a part of my (budsterblue's) script by seeing if it's using blue text.<br>This applies to the side bar (excluding chat) and this info screen, and may apply to more places in the future.";
+pxControls.insertBefore(pxControlsTip, pxControls.children[14]);
 
 // --Options--
 // Toggles Category
@@ -50,8 +80,8 @@ pxOptionsToggles.appendChild(pxPreview);
 pxOptionsToggles.append("Preview");
 pxOptionsToggles.appendChild(document.createElement("br")); // Line Break
 // Keybinds
-var pxPalleteCheckbox = document.createElement("input");
-pxOptionsToggles.appendChild(pxPalleteCheckbox);
+var pxPaletteCheckbox = document.createElement("input");
+pxOptionsToggles.appendChild(pxPaletteCheckbox);
 pxOptionsToggles.append("Keybinds");
 pxOptionsToggles.appendChild(document.createElement("br")); // Line Break
 // Opacity Fade
@@ -169,22 +199,22 @@ document.getElementById("urlSelector").placeholder = "https://example.com/image.
 
 // --Color Hotkeys--
 // Styling
-pxPalleteCheckbox.type = "checkbox";
-pxPalleteCheckbox.checked = true;
+pxPaletteCheckbox.type = "checkbox";
+pxPaletteCheckbox.checked = true;
 // Logic
-var pxPalleteIndex = 0;
+var pxPaletteIndex = 0;
 window.addEventListener ("keydown", function (e) {
-	if (pxPalleteCheckbox.checked) {
+	if (pxPaletteCheckbox.checked) {
     		if (e.which === 122) {
 			e.preventDefault();
-			if (pxPalleteIndex == 0) { pxPalleteIndex = 28; }
-			else { pxPalleteIndex -= 1; }
-			[...document.getElementsByClassName('btnbelow')][pxPalleteIndex].click();
+			if (pxPaletteIndex == 0) { pxPaletteIndex = 28; }
+			else { pxPaletteIndex -= 1; }
+			[...document.getElementsByClassName('btnbelow')][pxPaletteIndex].click();
     		} else if (e.which == 123) {
 			e.preventDefault();
-			if (pxPalleteIndex == 28) { pxPalleteIndex = 0; }
-			else { pxPalleteIndex += 1; }
-			[...document.getElementsByClassName('btnbelow')][pxPalleteIndex].click();
+			if (pxPaletteIndex == 28) { pxPaletteIndex = 0; }
+			else { pxPaletteIndex += 1; }
+			[...document.getElementsByClassName('btnbelow')][pxPaletteIndex].click();
 		}
 // --Overlay Toggle Hotkey--
 		else if (e.which == 121) {
@@ -196,6 +226,17 @@ window.addEventListener ("keydown", function (e) {
                                 pxOverlay.style.visibility = "hidden";
 			}
 		}
+// --Overlay At Cursor--
+        	if (e.which == 120) {
+                	var pxCursorX, pxCursorY;
+                	[,,pxCursorX,,,pxCursorY] = document.getElementById("coords").innerText.split(" ");
+	                // X
+        	        document.getElementById("offsetX").value = pxCursorX;
+	                document.getElementById("offsetX").dispatchEvent(new Event('change'))
+        	        // Y
+                	document.getElementById("offsetY").value = pxCursorY;
+	                document.getElementById("offsetY").dispatchEvent(new Event('change'))
+        	}
 	}
 } );
 
@@ -265,20 +306,6 @@ window.addEventListener("load", function () {
 			}
 		});
 		document.body.appendChild(pxBrushSizeIndicator);
-	}
-});
-
-// --Overlay At Cursor--
-window.addEventListener ("keydown", function (e) {
-	if (e.which == 120) {
-		var pxCursorX, pxCursorY;
-		[,,pxCursorX,,,pxCursorY] = document.getElementById("coords").innerText.split(" ");
-		// X
-		document.getElementById("offsetX").value = pxCursorX;
-		document.getElementById("offsetX").dispatchEvent(new Event('change'))
-		// Y
-		document.getElementById("offsetY").value = pxCursorY;
-		document.getElementById("offsetY").dispatchEvent(new Event('change'))
 	}
 });
 
