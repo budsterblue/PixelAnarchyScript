@@ -1,12 +1,8 @@
 // ==UserScript==
 // @name           Pixel Anarchy Script
-// @namespace      pixel_anarchy_script
 // @description    Miscellaneous tools for the site Pixel Anarchy Online
 // @author 	   Budsterblue
-// @include        http://*.pixelanarchy.online/*
-// @include        https://pixelanarchy.online/*
-// @match          http://pixelanarchy.online/*
-// @match          https://pixelanarchy.online/*
+// @match          *://pixelanarchy.online/*
 // @version        1.10
 // ==/UserScript==
 
