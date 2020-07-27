@@ -4,7 +4,7 @@
 // @description    Miscellaneous tools for the site Pixel Anarchy Online
 // @author 	   Budsterblue
 // @match          *://pixelanarchy.online/*
-// @version        1.12
+// @version        1.13
 // ==/UserScript==
 
 //TODO: Save/Load Settings and Finish Pixel Comparison
@@ -33,6 +33,28 @@ pxVersion.style.position = "absolute";
 pxVersion.style.bottom = 0;
 pxVersion.style.marginLeft = "5px";
 pxSidebar.appendChild(pxVersion);
+
+
+// Script Deprecation Info
+if (window.localStorage.getItem("pxDeprecation") === null) {
+	window.localStorage.setItem("pxDeprecation", "rip");
+	var pxFirst = false;
+
+	var pxSecondObserver = new MutationObserver(function (mutations, me) {
+  		if (pxFirst) {
+			Notiflix.Report.Warning('Please Read! (Page 2)', "Without being able to develop my script, I really have no reason to be here anymore as I've never been good at art and I just wanted to make it easier on the people who could actually make good art. Farewell, It's been a wild ride! (note: this message will only show once as to not annoy you) --Budsterblue", 'Continue');
+    			me.disconnect();
+    			return;
+  		}
+	});
+
+	pxSecondObserver.observe(document, {
+  		childList: true,
+  		subtree: true
+	});
+
+	Notiflix.Report.Warning('Please Read! (Page 1)',"Due to the site owner (Lex's) change of stance regarding scripts, I will no longer be developing this script and will be leaving the community. For now, it seems that this script still works, but if Lex decides to block it, I'm not going to waste the effort trying to bypass the block.",'Page 2', function() { pxFirst = true; });	
+}
 
 // Controls Info
 // The way I'm getting this variable is stupid...
@@ -88,6 +110,13 @@ pxOptionsToggles.appendChild(document.createElement("br")); // Line Break
 var pxOpacityCheckbox = document.createElement("input");
 pxOptionsToggles.appendChild(pxOpacityCheckbox);
 pxOptionsToggles.append("Opacity Fade");
+pxOptionsToggles.appendChild(document.createElement("br")); // Line Break
+// Right Click Palette
+var pxPaletteHoverCheckbox = document.createElement("input");
+pxPaletteHoverCheckbox.type = "checkbox";
+pxPaletteHoverCheckbox.checked = false;
+pxOptionsToggles.appendChild(pxPaletteHoverCheckbox);
+pxOptionsToggles.append("Right Click Palette");
 // Advanced Options Category
 var pxOptionsAdvanced = document.createElement("details");
 pxOptions.appendChild(pxOptionsAdvanced);
@@ -165,7 +194,9 @@ pxPreviewFunction();
 // Get Current Color (thanks bs2k for solving this part of the puzzle!), then fill a square and apply it to the mouse cursor
 [...document.getElementsByClassName('btnbelow')].forEach(function(elem){
     elem.addEventListener('click',function(e){
-	pxCtx.fillStyle = e.srcElement.id;
+	[...pxPaletteHover.children].forEach(function(el){ el.style.border = "2px solid gray"; });
+	document.getElementById("px" + e.target.id).style.border = "4px solid gray";
+	pxCtx.fillStyle = e.target.id;
     	if (pxPreview.checked) {
         	pxPreviewFunction();
     	}
@@ -207,14 +238,18 @@ window.addEventListener ("keydown", function (e) {
 	if (pxPaletteCheckbox.checked) {
     		if (e.which === 122) {
 			e.preventDefault();
+			pxPaletteHover.children[pxPaletteIndex].style.border = "2px solid gray"
 			if (pxPaletteIndex == 0) { pxPaletteIndex = 28; }
 			else { pxPaletteIndex -= 1; }
 			[...document.getElementsByClassName('btnbelow')][pxPaletteIndex].click();
+			pxPaletteHover.children[pxPaletteIndex].style.border = "4px solid gray"
     		} else if (e.which == 123) {
 			e.preventDefault();
+			pxPaletteHover.children[pxPaletteIndex].style.border = "2px solid gray"
 			if (pxPaletteIndex == 28) { pxPaletteIndex = 0; }
 			else { pxPaletteIndex += 1; }
 			[...document.getElementsByClassName('btnbelow')][pxPaletteIndex].click();
+			pxPaletteHover.children[pxPaletteIndex].style.border = "4px solid gray"
 		}
 // --Overlay Toggle Hotkey--
 		else if (e.which == 121) {
@@ -322,6 +357,61 @@ document.getElementById("scaleImg").style.display = "none";
 document.getElementById("scaleImg").parentElement.insertBefore(pxWidth, document.getElementById("scaleImg"));
 // Modified Text
 document.getElementById("textscale").children[0].innerHTML += "<span style='color:lightblue'> (modified by script)</span>";
+
+// --Stop Palette Sound--
+document.addEventListener('loadstart', function(e){
+    if (e.target.currentSrc == "https://pixelanarchy.online/notif.mp3") {
+        e.target.pause();
+    }
+}, true);
+
+// --Mouse-Attached Palette--
+var pxPaletteHover = document.createElement("div");
+pxPaletteHover.style.transition = "";
+pxPaletteHover.style.position = "absolute";
+pxPaletteHover.style.background = "#1B1B1B";
+pxPaletteHover.style.border = "3px solid #1B1B1B"
+pxPaletteHover.style.width = "144px";
+pxPaletteHover.style.overflow = "auto";
+pxPaletteHover.style.display == "none"
+document.body.appendChild(pxPaletteHover);
+
+// Function
+document.addEventListener('contextmenu', function(ev) {
+	ev.preventDefault()
+	if (pxPaletteHoverCheckbox.checked){
+	        if (pxPaletteHover.style.display == "none") {
+        	        pxPaletteHover.style.display = "initial";
+	                pxPaletteHover.style.transform = 'translateY('+(ev.clientY-80)+'px)';
+        	        pxPaletteHover.style.transform += 'translateX('+(ev.clientX+20)+'px)';
+	        }
+        	else { pxPaletteHover.style.display = "none"; }
+	}
+
+}, false);
+
+
+//document.addEventListener('mousemove', function(ev){
+//    pxPaletteHover.style.transform = 'translateY('+(ev.clientY-80)+'px)';
+//    pxPaletteHover.style.transform += 'translateX('+(ev.clientX+20)+'px)';            
+//},false);
+
+[...document.getElementsByClassName('btnbelow')].forEach(function(elem){
+	var pxPaletteColor = document.createElement("div");
+	pxPaletteColor.style.width = "20px"
+	pxPaletteColor.style.height = "20px"
+	pxPaletteColor.style.margin = "2px";
+	pxPaletteColor.style.border = "2px solid gray";
+	pxPaletteColor.style.display = "inline-block";
+	pxPaletteColor.style.background = elem.id;
+	pxPaletteColor.id = "px" + elem.id;
+	pxPaletteColor.addEventListener('click', function(e){
+		[...pxPaletteHover.children].forEach(function(el){ el.style.border = "2px solid gray"; });
+        	e.target.style.border = "4px solid gray";
+		document.getElementById(e.target.id.substring(2)).click();
+	});
+	pxPaletteHover.appendChild(pxPaletteColor);
+});
 
 // --Overlay Comparison WIP--
 // Values Reference
